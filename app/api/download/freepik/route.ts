@@ -120,6 +120,12 @@ export async function POST (req: Request) {
                         }
                     }
                 })
+                return Response.json({
+                    message: 'Downloaded',
+                    data: res.data
+                }, {
+                    status: 200
+                })
             }
 
             await prisma.freePikLimit.update({
@@ -154,6 +160,12 @@ export async function POST (req: Request) {
                             decrement: 1
                         }
                     }
+                })
+                return Response.json({
+                    message: 'Downloaded',
+                    data: res.data
+                }, {
+                    status: 200
                 })
             }
 
@@ -193,6 +205,12 @@ export async function POST (req: Request) {
                         }
                     }
                 })
+                return Response.json({
+                    message: 'Downloaded',
+                    data: res.data
+                }, {
+                    status: 200
+                })
             }
 
             await prisma.freePikLimit.update({
@@ -231,6 +249,12 @@ export async function POST (req: Request) {
                             decrement: 1
                         }
                     }
+                })
+                return Response.json({
+                    message: 'Downloaded',
+                    data: res.data
+                }, {
+                    status: 200
                 })
             }
 
