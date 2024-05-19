@@ -127,6 +127,13 @@ export async function POST (req: Request) {
                     }
                 }
             })
+            return Response.json({
+                message: 'Downloaded',
+                data: res.data
+            }, {
+                status: 200
+            })
+
         }
 
         await prisma.envatoLimit.update({
