@@ -106,6 +106,41 @@ export async function POST (req: Request) {
             })
         }
 
+        const res = await axios.get(`https://server-4-9ctr2.ondigitalocean.app/api/freepik?fileId=${fileId}`)
+
+        if (res.data.success) {
+            if (limit.freepik <= 0) {
+                await prisma.freePikMonthlyLimit.update({
+                    where: {
+                        userId
+                    },
+                    data: {
+                        freepik: {
+                            decrement: 1
+                        }
+                    }
+                })
+            }
+
+            await prisma.freePikLimit.update({
+                where: {
+                    userId
+                },
+                data: {
+                    freepik: {
+                        decrement: 1
+                    }
+                }
+            });
+
+            return Response.json({
+                message: 'Downloaded',
+                data: res.data
+            }, {
+                status: 200
+            })
+        }
+
         const res0 = await axios.get(`https://envato-web-server-vrhv2.ondigitalocean.app/api/freepik?fileId=${fileId}`)
 
         if (res0.data.success) {
