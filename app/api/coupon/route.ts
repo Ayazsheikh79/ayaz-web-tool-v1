@@ -4,7 +4,6 @@ import * as crypto from "crypto";
 export async function POST(req: Request) {
     const body = await req.json();
     const {email, planCode, credit} = body;
-    console.log(body);
 
     const options = [
         {label: 'Envato - Basic', planCode: 11},

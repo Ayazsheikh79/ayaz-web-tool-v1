@@ -108,9 +108,9 @@ export default function Page() {
                 return toast.error('Please enter an email')
             }
             setIsSearching(true)
-            const res = await axios.post('/api/find-user', {email: email})
-            setManageUser(res.data.data)
-            setManageUserPlan(res.data.plan)
+            const res = await axios.get(`/api/profile?email=${email}`)
+            setManageUser(res.data.data.user)
+            setManageUserPlan(res.data.data.plans)
             setIsSearching(false)
         } catch (e:any) {
             toast.error(e.response.data.message)
@@ -125,15 +125,31 @@ export default function Page() {
                 return toast.error('Please enter an id')
             }
             setIsDeactivating(true)
-           const res = await axios.post('/api/deactivate-plan', {id: id})
-              toast.success(res.data.message)
-            const res1 = await axios.post('/api/find-user', {email: email})
-            setManageUser(res1.data.data)
-            setManageUserPlan(res1.data.plan)
+           const res = await axios.get(`/api/deactivate-plan?id=${id}`)
+            toast.success(res.data.message)
+            const res1 = await axios.get(`/api/profile?email=${email}`)
+            setManageUser(res.data.data.user)
+            setManageUserPlan(res.data.data.plans)
             setIsDeactivating(false)
         } catch (e:any) {
             toast.error(e.response.data.message)
             setIsDeactivating(false)
+        }
+    }
+
+    const [isDeleting, setIsDeleting] = useState(false)
+    const deletePlan = async (id:any) => {
+        try {
+            if (!id) {
+                return toast.error('Please enter an id')
+            }
+            setIsDeleting(true)
+            const res = await axios.get(`/api/delete-plan?id=${id}`)
+            toast.success(res.data.message)
+            setIsDeleting(false)
+        } catch (e:any) {
+            toast.error(e.response.data.message)
+            setIsDeleting(false)
         }
     }
 
@@ -229,7 +245,7 @@ export default function Page() {
                                 Plan Duration: <span className={'font-semibold'}>{coupon.duration} days</span>
                             </div>
                             <div>
-                                Redeem here: <span className={'font-semibold'}>https://winbazar.in/#redeem</span>
+                                Redeem here: <span className={'font-semibold'}>https://tool-v1-mysrl.ondigitalocean.app/#redeem</span>
                             </div>
                         </div>
                         <Button
@@ -297,47 +313,63 @@ export default function Page() {
                                             {/* @ts-ignore */}
                                             Password: {manageUser.password}
                                         </div>
-                                        <div>
-                                            {/* @ts-ignore */}
-                                            Status: {manageUser.status}
-                                        </div>
                                     </div>
                                     <Divider orientation={'horizontal'}/>
                                     <div className={'font-bold text-sm'}>
                                         Edit User Plan
                                     </div>
-                                    {!manageUserPlan &&
+                                    {/* @ts-ignore */}
+                                    {manageUserPlan.length <= 0 &&
                                         <div>
                                             User has no active plan
                                         </div>
                                     }
                                     {manageUserPlan &&
-                                        <div className={'text-sm font-light space-y-1'}>
-                                            <div>
-                                                {/* @ts-ignore */}
-                                                Plan: {manageUserPlan.name}
-                                            </div>
-                                            <div>
-                                                {/* @ts-ignore */}
-                                                Status: {manageUserPlan.status}
-                                            </div>
-                                            <div>
-                                                {/* @ts-ignore */}
-                                                Start Date: {new Date(manageUserPlan.startDate).toDateString()}
-                                            </div>
-                                            <div>
-                                                {/* @ts-ignore */}
-                                                End Date: {new Date(manageUserPlan.endDate).toDateString()}
-                                            </div>
-                                            <Button
-                                                // @ts-ignore
-                                                onClick={() => deactivatePlan(manageUserPlan.id)}
-                                                isLoading={isDeactivating}
-                                                variant={'shadow'}
-                                                color={'danger'}
-                                            >
-                                                Deactivate Plan
-                                            </Button>
+                                        <div className={'space-y-4'}>
+                                            {/* @ts-ignore */}
+                                            {manageUserPlan.map((plan:any) => (
+                                                <div key={plan.id}>
+                                                    <div className={'text-sm font-light space-y-1 border rounded-md p-4'}>
+                                                        <div>
+                                                            {/* @ts-ignore */}
+                                                            Plan: {plan.name}
+                                                        </div>
+                                                        <div>
+                                                            {/* @ts-ignore */}
+                                                            Status: {plan.active ? 'Active' : 'Inactive'}
+                                                        </div>
+                                                        <div>
+                                                            {/* @ts-ignore */}
+                                                            Start
+                                                            Date: {new Date(plan.startDate).toDateString()}
+                                                        </div>
+                                                        <div>
+                                                            {/* @ts-ignore */}
+                                                            End Date: {new Date(plan.endDate).toDateString()}
+                                                        </div>
+                                                        <div className={'flex gap-2'}>
+                                                            <Button
+                                                                // @ts-ignore
+                                                                onClick={() => deactivatePlan(plan.id)}
+                                                                isLoading={isDeactivating}
+                                                                variant={'flat'}
+                                                                color={'warning'}
+                                                            >
+                                                                Deactivate Plan
+                                                            </Button>
+                                                            <Button
+                                                                // @ts-ignore
+                                                                onClick={() => deletePlan(plan.id)}
+                                                                isLoading={isDeleting}
+                                                                variant={'flat'}
+                                                                color={'danger'}
+                                                            >
+                                                                Delete Plan
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
                                         </div>
                                     }
                                 </div>

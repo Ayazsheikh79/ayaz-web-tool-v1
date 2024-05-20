@@ -5,6 +5,26 @@ export async function POST(req: Request) {
         const body = await req.json();
         const { code, email } = body;
 
+        const options = [
+            {label: 'Envato - Basic', planCode: 11},
+            {label: 'Envato - Standard', planCode: 21},
+            {label: 'Envato - Premium', planCode: 31},
+
+            {label: 'FreePik - Basic', planCode: 12},
+            {label: 'FreePik - Standard', planCode: 22},
+            {label: 'FreePik - Premium', planCode: 32},
+
+            {label: 'Envato - Basic - 100 - 1 Month', planCode: 14},
+            {label: 'Envato - Standard - 200 - 1 Month', planCode: 24},
+            {label: 'Envato - Premium - 300 - 1 Month', planCode: 34},
+
+            {label: 'Freepik - Basic - 100 - 1 Month', planCode: 15},
+            {label: 'Freepik - Standard - 200 - 1 Month', planCode: 25},
+            {label: 'Freepik - Premium - 300 - 1 Month', planCode: 35},
+
+            {label: 'On Demand Credits', planCode: 99}
+        ]
+
         if (!code || !email) {
             return Response.json({
                 message: 'Invalid request'
@@ -54,67 +74,134 @@ export async function POST(req: Request) {
         const endDate = new Date(startDate);
         endDate.setDate(endDate.getDate() + 30);
 
-        const plan = await prisma.plan.create({
-            data: {
-                userId: user.id,
-                name: redeemCode.name,
-                startDate: startDate,
-                endDate: endDate,
-                planCode: redeemCode.planCode
-            }
-        })
+        //divide the plans in 3 groups and for example 11, 21, 31 are the plans for envato and 14, 24, 34 are the plans for envato monthly and 12, 22, 32 are the plans for freepik and 15, 25, 35 are the plans for freepik monthly now check the plancode of the redeem code and check from which group it belongs and then check if the user has any plan from that group if yes then update the plan and if no then create a new plan and update the limit of that group
 
-        if (!plan) {
-            return Response.json({
-                message: 'Something went wrong'
-            }, {
-                status: 400
+        const group1 = [11, 21, 31]; // envato daily
+        const group2 = [14, 24, 34]; // envato monthly
+        const group3 = [12, 22, 32]; // freepik daily
+        const group4 = [15, 25, 35]; // freepik monthly
+        const group5 = [99];
+
+        if (group1.includes(redeemCode.planCode)) {
+            const plans = await prisma.plan.findMany({
+                where: {
+                    userId: user.id,
+                    planCode: {
+                        in: group1
+                    },
+                    active: true,
+                    endDate: {
+                        gt: new Date()
+                    }
+                }
             });
-        }
+            if (plans.length > 0) {
+                const deactivatePlans = await prisma.plan.updateMany({
+                    where: {
+                        userId: user.id,
+                        planCode: {
+                            in: group1
+                        }
+                    },
+                    data: {
+                        active: false
+                    }
+                });
+                const updateLimit = await prisma.envatoLimit.update({
+                    where: {
+                        userId: user.id
+                    },
+                    data: {
+                        envato: 0,
+                        planCode: 0
+                    }
+                })
+            }
 
+            const createPlan = await prisma.plan.create({
+                data: {
+                    userId: user.id,
+                    name: redeemCode.name,
+                    startDate: startDate,
+                    endDate: endDate,
+                    planCode: redeemCode.planCode
+                }
+            });
 
-        if (redeemCode.planCode === 11 || redeemCode.planCode === 21 || redeemCode.planCode === 31) {
+            if (!createPlan) {
+                return Response.json({
+                    message: 'Something went wrong'
+                }, {
+                    status: 400
+                });
+            }
+
             const updateEnvatoLimit = await prisma.envatoLimit.update({
                 where: {
                     userId: user.id
                 },
-                data : {
+                data: {
                     envato: redeemCode.planCode === 11 ? 10 : redeemCode.planCode === 21 ? 20 : redeemCode.planCode === 31 ? 30 : 0,
                     planCode: redeemCode.planCode
                 }
-            })
-
-            if (!updateEnvatoLimit) {
-                return Response.json({
-                    message: 'Something went wrong'
-                }, {
-                    status: 400
-                });
-            }
+            });
         }
 
-        if (redeemCode.planCode === 12 || redeemCode.planCode === 22 || redeemCode.planCode === 32) {
-            const updateFreepikLimit = await prisma.freePikLimit.update({
+        if (group2.includes(redeemCode.planCode)) {
+            const plans = await prisma.plan.findMany({
                 where: {
-                    userId: user.id
-                },
+                    userId: user.id,
+                    planCode: {
+                        in: group2
+                    },
+                    active: true,
+                    endDate: {
+                        gt: new Date()
+                    }
+                }
+            });
+            if (plans.length > 0) {
+                const deactivatePlans = await prisma.plan.updateMany({
+                    where: {
+                        userId: user.id,
+                        planCode: {
+                            in: group2
+                        }
+                    },
+                    data: {
+                        active: false
+                    }
+                });
+                const updateLimit = await prisma.envatoMonthlyLimit.update({
+                    where: {
+                        userId: user.id
+                    },
+                    data: {
+                        envato: 0,
+                        planCode: 0
+                    }
+                })
+            }
+
+            const createPlan = await prisma.plan.create({
                 data: {
-                    freepik: redeemCode.planCode === 12 ? 10 : redeemCode.planCode === 22 ? 20 : redeemCode.planCode === 32 ? 30 : 0,
+                    userId: user.id,
+                    name: redeemCode.name,
+                    startDate: startDate,
+                    endDate: endDate,
                     planCode: redeemCode.planCode
                 }
             });
 
-            if (!updateFreepikLimit) {
+            if (!createPlan) {
                 return Response.json({
                     message: 'Something went wrong'
                 }, {
                     status: 400
                 });
             }
-        }
 
-        if (redeemCode.planCode === 14 || redeemCode.planCode === 24 || redeemCode.planCode === 34) {
-            const updateEnvatoMonthly = await prisma.envatoMonthlyLimit.update({
+            const updateEnvatoLimit = await prisma.envatoMonthlyLimit.update({
                 where: {
                     userId: user.id
                 },
@@ -123,8 +210,55 @@ export async function POST(req: Request) {
                     planCode: redeemCode.planCode
                 }
             });
+        }
 
-            if (!updateEnvatoMonthly) {
+        if (group3.includes(redeemCode.planCode)) {
+            const plans = await prisma.plan.findMany({
+                where: {
+                    userId: user.id,
+                    planCode: {
+                        in: group3
+                    },
+                    active: true,
+                    endDate: {
+                        gt: new Date()
+                    }
+                }
+            });
+            if (plans.length > 0) {
+                const deactivatePlans = await prisma.plan.updateMany({
+                    where: {
+                        userId: user.id,
+                        planCode: {
+                            in: group3
+                        }
+                    },
+                    data: {
+                        active: false
+                    }
+                });
+                const updateLimit = await prisma.freePikLimit.update({
+                    where: {
+                        userId: user.id
+                    },
+                    data: {
+                        freepik: 0,
+                        planCode: 0
+                    }
+                })
+            }
+
+            const createPlan = await prisma.plan.create({
+                data: {
+                    userId: user.id,
+                    name: redeemCode.name,
+                    startDate: startDate,
+                    endDate: endDate,
+                    planCode: redeemCode.planCode
+                }
+            });
+
+            if (!createPlan) {
                 return Response.json({
                     message: 'Something went wrong'
                 }, {
@@ -132,10 +266,72 @@ export async function POST(req: Request) {
                 });
             }
 
+            const updateEnvatoLimit = await prisma.freePikLimit.update({
+                where: {
+                    userId: user.id
+                },
+                data: {
+                    freepik: redeemCode.planCode === 12 ? 10 : redeemCode.planCode === 22 ? 20 : redeemCode.planCode === 32 ? 30 : 0,
+                    planCode: redeemCode.planCode
+                }
+            });
         }
 
-        if (redeemCode.planCode === 15 || redeemCode.planCode === 25 || redeemCode.planCode === 35) {
-            const updateFreepikMonthly = await prisma.freePikMonthlyLimit.update({
+        if (group4.includes(redeemCode.planCode)) {
+            const plans = await prisma.plan.findMany({
+                where: {
+                    userId: user.id,
+                    planCode: {
+                        in: group4
+                    },
+                    active: true,
+                    endDate: {
+                        gt: new Date()
+                    }
+                }
+            });
+            if (plans.length > 0) {
+                const deactivatePlans = await prisma.plan.updateMany({
+                    where: {
+                        userId: user.id,
+                        planCode: {
+                            in: group4
+                        }
+                    },
+                    data: {
+                        active: false
+                    }
+                });
+                const updateLimit = await prisma.freePikMonthlyLimit.update({
+                    where: {
+                        userId: user.id
+                    },
+                    data: {
+                        freepik: 0,
+                        planCode: 0
+                    }
+                })
+            }
+
+            const createPlan = await prisma.plan.create({
+                data: {
+                    userId: user.id,
+                    name: redeemCode.name,
+                    startDate: startDate,
+                    endDate: endDate,
+                    planCode: redeemCode.planCode
+                }
+            });
+
+            if (!createPlan) {
+                return Response.json({
+                    message: 'Something went wrong'
+                }, {
+                    status: 400
+                });
+            }
+
+            const updateEnvatoLimit = await prisma.freePikMonthlyLimit.update({
                 where: {
                     userId: user.id
                 },
@@ -144,24 +340,13 @@ export async function POST(req: Request) {
                     planCode: redeemCode.planCode
                 }
             });
-
-            if (!updateFreepikMonthly) {
-                return Response.json({
-                    message: 'Something went wrong'
-                }, {
-                    status: 400
-                });
-            }
         }
 
-
-        if (redeemCode.planCode === 99) {
-            const addCredits = await prisma.credit.create({
-                data: {
-                    userId: user.id,
-                    amount: redeemCode.credit,
-                    endDate: endDate
-                }
+        if (group5.includes(redeemCode.planCode)) {
+            return Response.json({
+                message: 'Coming soon'
+            }, {
+                status: 200
             })
         }
 
@@ -173,14 +358,6 @@ export async function POST(req: Request) {
                 active: false
             }
         });
-
-        if (!updateRedeemCode) {
-            return Response.json({
-                message: 'Something went wrong'
-            }, {
-                status: 400
-            });
-        }
 
         return Response.json({
             message: 'Code redeemed successfully'
