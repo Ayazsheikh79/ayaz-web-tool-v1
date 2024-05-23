@@ -8,19 +8,23 @@ datasource db {
 }
 
 model User {
-  id                  String               @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
-  name                String
-  email               String               @unique
-  password            String?
-  role                String               @default("user")
-  plan                Plan[]
-  envatoMonthlyLimit  EnvatoMonthlyLimit?
-  freepikMonthlyLimit FreePikMonthlyLimit?
-  envatoLimit         EnvatoLimit?
-  freepikLimit        FreePikLimit?
-  credit              Credit[]
+  id                      String                   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
+  name                    String
+  email                   String                   @unique
+  password                String?
+  role                    String                   @default("user")
+  plan                    Plan[]
+  envatoMonthlyLimit      EnvatoMonthlyLimit?
+  freepikMonthlyLimit     FreePikMonthlyLimit?
+  envatoLimit             EnvatoLimit?
+  freepikLimit            FreePikLimit?
+  artlistLimit            ArtlistLimit?
+  artlistMonthlyLimit     ArtlistMonthlyLimit?
+  vectorStockLimit        VectorStockLimit?
+  vectorStockMonthlyLimit VectorStockMonthlyLimit?
+  credit                  Credit[]
 }
 
 model EnvatoMonthlyLimit {
@@ -61,6 +65,46 @@ model FreePikLimit {
   user      User     @relation(fields: [userId], references: [id])
   userId    String   @unique @db.ObjectId
   freepik   Int      @default(0)
+}
+
+model ArtlistLimit {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  planCode  Int      @default(0)
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique @db.ObjectId
+  artlist   Int      @default(0)
+}
+
+model ArtlistMonthlyLimit {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  planCode  Int      @default(0)
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique @db.ObjectId
+  artlist   Int      @default(0)
+}
+
+model VectorStockLimit {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  planCode    Int      @default(0)
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String   @unique @db.ObjectId
+  vectorStock Int      @default(0)
+}
+
+model VectorStockMonthlyLimit {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  planCode    Int      @default(0)
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String   @unique @db.ObjectId
+  vectorStock Int      @default(0)
 }
 
 model Plan {

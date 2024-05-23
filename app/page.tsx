@@ -77,6 +77,103 @@ export default function Home() {
                                   className={'absolute left-2 top-1/2 transform -translate-y-1/2'}
                               />
                           </button>
+
+                          <button
+                              className={'relative bg-white text-center w-full p-4 border cursor-pointer rounded-md shadow-sm'}
+                              onClick={() => router.push('/artlist-music')}
+                          >
+                        <span className={'text-xl font-medium'}>
+                            Artlist Music
+                        </span>
+                              <Image
+                                  src={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnDyPwJORgv4ebryiGXIFpwcDb49bRr-mkyl666aBjxw&s'}
+                                  alt={'artlist'}
+                                  width={52}
+                                  height={52}
+                                  className={'absolute left-2 top-1/2 transform -translate-y-1/2 rounded-full'}
+                              />
+                          </button>
+
+                          <button
+                              className={'relative bg-white text-center w-full p-4 border cursor-pointer rounded-md shadow-sm'}
+                              onClick={() => router.push('/artlist-footage')}
+                          >
+                        <span className={'text-xl font-medium'}>
+                            Artlist Footage (video)
+                        </span>
+                              <Image
+                                  src={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnDyPwJORgv4ebryiGXIFpwcDb49bRr-mkyl666aBjxw&s'}
+                                  alt={'artlist'}
+                                  width={52}
+                                  height={52}
+                                  className={'absolute left-2 top-1/2 transform -translate-y-1/2 rounded-full'}
+                              />
+                          </button>
+
+                          <button
+                              className={'relative bg-white text-center w-full p-4 border cursor-pointer rounded-md shadow-sm'}
+                              onClick={() => router.push('/artlist-sfx')}
+                          >
+                        <span className={'text-xl font-medium'}>
+                            Artlist Sound Effects
+                        </span>
+                              <Image
+                                  src={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnDyPwJORgv4ebryiGXIFpwcDb49bRr-mkyl666aBjxw&s'}
+                                  alt={'artlist'}
+                                  width={52}
+                                  height={52}
+                                  className={'absolute left-2 top-1/2 transform -translate-y-1/2 rounded-full'}
+                              />
+                          </button>
+
+                          <button
+                              className={'relative bg-white text-center w-full p-4 border cursor-pointer rounded-md shadow-sm'}
+                              onClick={() => router.push('/artlist-sfx')}
+                          >
+                        <span className={'text-xl font-medium'}>
+                            Artlist Sound Effects
+                        </span>
+                              <Image
+                                  src={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnDyPwJORgv4ebryiGXIFpwcDb49bRr-mkyl666aBjxw&s'}
+                                  alt={'artlist'}
+                                  width={52}
+                                  height={52}
+                                  className={'absolute left-2 top-1/2 transform -translate-y-1/2 rounded-full'}
+                              />
+                          </button>
+
+                          <button
+                              className={'relative bg-white text-center w-full p-4 border cursor-pointer rounded-md shadow-sm'}
+                              onClick={() => router.push('/artlist-templates')}
+                          >
+                        <span className={'text-xl font-medium'}>
+                            Artlist Video Templates
+                        </span>
+                              <Image
+                                  src={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnDyPwJORgv4ebryiGXIFpwcDb49bRr-mkyl666aBjxw&s'}
+                                  alt={'artlist'}
+                                  width={52}
+                                  height={52}
+                                  className={'absolute left-2 top-1/2 transform -translate-y-1/2 rounded-full'}
+                              />
+                          </button>
+
+                          <button
+                              className={'relative bg-white text-center w-full p-4 border cursor-pointer rounded-md shadow-sm'}
+                              onClick={() => router.push('/vectorstock')}
+                          >
+                        <span className={'text-xl font-medium'}>
+                            VectorStock
+                        </span>
+                              <Image
+                                  src={'https://cdn.vectorstock.com/img/icons/vectorstock-fb-logo.jpg'}
+                                  alt={'vectorstock'}
+                                  width={52}
+                                  height={52}
+                                  className={'absolute left-2 top-1/2 transform -translate-y-1/2 rounded-full'}
+                              />
+                          </button>
+
                       </div>
                   </div>
                   <Divider/>

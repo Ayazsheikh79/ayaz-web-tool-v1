@@ -22,6 +22,22 @@ export async function POST(req: Request) {
         {label: 'Freepik - Standard - 200 - 1 Month', planCode: 25},
         {label: 'Freepik - Premium - 300 - 1 Month', planCode: 35},
 
+        {label: 'Artlist - Basic', planCode: 41},
+        {label: 'Artlist - Standard', planCode: 42},
+        {label: 'Artlist - Premium', planCode: 43},
+
+        {label: 'Artlist - Basic - 100 - 1 Month', planCode: 44},
+        {label: 'Artlist - Standard - 200 - 1 Month', planCode: 45},
+        {label: 'Artlist - Premium - 300 - 1 Month', planCode: 46},
+
+        {label: 'VectorStock - Basic', planCode: 51},
+        {label: 'VectorStock - Standard', planCode: 52},
+        {label: 'VectorStock - Premium', planCode: 53},
+
+        {label: 'VectorStock - Basic - 100 - 1 Month', planCode: 54},
+        {label: 'VectorStock - Standard - 200 - 1 Month', planCode: 55},
+        {label: 'VectorStock - Premium - 300 - 1 Month', planCode: 56},
+
         {label: 'On Demand Credits', planCode: 99}
     ]
 

@@ -22,6 +22,22 @@ export async function POST(req: Request) {
             {label: 'Freepik - Standard - 200 - 1 Month', planCode: 25},
             {label: 'Freepik - Premium - 300 - 1 Month', planCode: 35},
 
+            {label: 'Artlist - Basic', planCode: 41},
+            {label: 'Artlist - Standard', planCode: 42},
+            {label: 'Artlist - Premium', planCode: 43},
+
+            {label: 'Artlist - Basic - 100 - 1 Month', planCode: 44},
+            {label: 'Artlist - Standard - 200 - 1 Month', planCode: 45},
+            {label: 'Artlist - Premium - 300 - 1 Month', planCode: 46},
+
+            {label: 'VectorStock - Basic', planCode: 51},
+            {label: 'VectorStock - Standard', planCode: 52},
+            {label: 'VectorStock - Premium', planCode: 53},
+
+            {label: 'VectorStock - Basic - 100 - 1 Month', planCode: 54},
+            {label: 'VectorStock - Standard - 200 - 1 Month', planCode: 55},
+            {label: 'VectorStock - Premium - 300 - 1 Month', planCode: 56},
+
             {label: 'On Demand Credits', planCode: 99}
         ]
 
@@ -74,13 +90,15 @@ export async function POST(req: Request) {
         const endDate = new Date(startDate);
         endDate.setDate(endDate.getDate() + 30);
 
-        //divide the plans in 3 groups and for example 11, 21, 31 are the plans for envato and 14, 24, 34 are the plans for envato monthly and 12, 22, 32 are the plans for freepik and 15, 25, 35 are the plans for freepik monthly now check the plancode of the redeem code and check from which group it belongs and then check if the user has any plan from that group if yes then update the plan and if no then create a new plan and update the limit of that group
-
         const group1 = [11, 21, 31]; // envato daily
         const group2 = [14, 24, 34]; // envato monthly
         const group3 = [12, 22, 32]; // freepik daily
         const group4 = [15, 25, 35]; // freepik monthly
-        const group5 = [99];
+        const group5 = [41, 42, 43]; // artlist daily
+        const group6 = [44, 45, 46]; // artlist monthly
+        const group7 = [51, 52, 53]; // vectorstock daily
+        const group8 = [54, 55, 56]; // vectorstock monthly
+        const group9 = [99]; // on demand credits
 
         if (group1.includes(redeemCode.planCode)) {
             const plans = await prisma.plan.findMany({
@@ -343,6 +361,334 @@ export async function POST(req: Request) {
         }
 
         if (group5.includes(redeemCode.planCode)) {
+            const plans = await prisma.plan.findMany({
+                where: {
+                    userId: user.id,
+                    planCode: {
+                        in: group5
+                    },
+                    active: true,
+                    endDate: {
+                        gt: new Date()
+                    }
+                }
+            });
+            if (plans.length > 0) {
+                const deactivatePlans = await prisma.plan.updateMany({
+                    where: {
+                        userId: user.id,
+                        planCode: {
+                            in: group5
+                        }
+                    },
+                    data: {
+                        active: false
+                    }
+                });
+
+                const checkLimitDoc = await prisma.artlistLimit.findUnique({
+                    where: {
+                        userId: user.id
+                    }
+                });
+
+                if (!checkLimitDoc) {
+                    const createLimit = await prisma.artlistLimit.create({
+                        data: {
+                            userId: user.id,
+                            artlist: 0,
+                            planCode: 0
+                        }
+                    });
+                }
+
+                const updateLimit = await prisma.artlistLimit.update({
+                    where: {
+                        userId: user.id
+                    },
+                    data: {
+                        artlist: 0,
+                        planCode: 0
+                    }
+                })
+            }
+
+            const createPlan = await prisma.plan.create({
+                data: {
+                    userId: user.id,
+                    name: redeemCode.name,
+                    startDate: startDate,
+                    endDate: endDate,
+                    planCode: redeemCode.planCode
+                }
+            });
+
+            if (!createPlan) {
+                return Response.json({
+                    message: 'Something went wrong'
+                }, {
+                    status: 400
+                });
+            }
+
+            const updateArtlistLimit = await prisma.artlistLimit.update({
+                where: {
+                    userId: user.id
+                },
+                data: {
+                    artlist: redeemCode.planCode === 41 ? 10 : redeemCode.planCode === 42 ? 20 : redeemCode.planCode === 43 ? 30 : 0,
+                    planCode: redeemCode.planCode
+                }
+            });
+        }
+
+        if (group6.includes(redeemCode.planCode)) {
+            const plans = await prisma.plan.findMany({
+                where: {
+                    userId: user.id,
+                    planCode: {
+                        in: group6
+                    },
+                    active: true,
+                    endDate: {
+                        gt: new Date()
+                    }
+                }
+            });
+            if (plans.length > 0) {
+                const deactivatePlans = await prisma.plan.updateMany({
+                    where: {
+                        userId: user.id,
+                        planCode: {
+                            in: group6
+                        }
+                    },
+                    data: {
+                        active: false
+                    }
+                });
+
+                const checkLimitDoc = await prisma.artlistMonthlyLimit.findUnique({
+                    where: {
+                        userId: user.id
+                    }
+                });
+
+                if (!checkLimitDoc) {
+                    const createLimit = await prisma.artlistMonthlyLimit.create({
+                        data: {
+                            userId: user.id,
+                            artlist: 0,
+                            planCode: 0
+                        }
+                    });
+                }
+
+                const updateLimit = await prisma.artlistMonthlyLimit.update({
+                    where: {
+                        userId: user.id
+                    },
+                    data: {
+                        artlist: 0,
+                        planCode: 0
+                    }
+                })
+            }
+
+            const createPlan = await prisma.plan.create({
+                data: {
+                    userId: user.id,
+                    name: redeemCode.name,
+                    startDate: startDate,
+                    endDate: endDate,
+                    planCode: redeemCode.planCode
+                }
+            });
+
+            if (!createPlan) {
+                return Response.json({
+                    message: 'Something went wrong'
+                }, {
+                    status: 400
+                });
+            }
+
+            const updateArtlistLimit = await prisma.artlistMonthlyLimit.update({
+                where: {
+                    userId: user.id
+                },
+                data: {
+                    artlist: redeemCode.planCode === 44 ? 100 : redeemCode.planCode === 45 ? 200 : redeemCode.planCode === 46 ? 300 : 0,
+                    planCode: redeemCode.planCode
+                }
+            });
+        }
+
+        if (group7.includes(redeemCode.planCode)) {
+            const plans = await prisma.plan.findMany({
+                where: {
+                    userId: user.id,
+                    planCode: {
+                        in: group7
+                    },
+                    active: true,
+                    endDate: {
+                        gt: new Date()
+                    }
+                }
+            });
+            if (plans.length > 0) {
+                const deactivatePlans = await prisma.plan.updateMany({
+                    where: {
+                        userId: user.id,
+                        planCode: {
+                            in: group7
+                        }
+                    },
+                    data: {
+                        active: false
+                    }
+                });
+
+                const checkLimitDoc = await prisma.vectorStockLimit.findUnique({
+                    where: {
+                        userId: user.id
+                    }
+                });
+
+                if (!checkLimitDoc) {
+                    const createLimit = await prisma.vectorStockLimit.create({
+                        data: {
+                            userId: user.id,
+                            vectorStock: 0,
+                            planCode: 0
+                        }
+                    });
+                }
+
+                const updateLimit = await prisma.vectorStockLimit.update({
+                    where: {
+                        userId: user.id
+                    },
+                    data: {
+                        vectorStock: 0,
+                        planCode: 0
+                    }
+                })
+            }
+
+            const createPlan = await prisma.plan.create({
+                data: {
+                    userId: user.id,
+                    name: redeemCode.name,
+                    startDate: startDate,
+                    endDate: endDate,
+                    planCode: redeemCode.planCode
+                }
+            });
+
+            if (!createPlan) {
+                return Response.json({
+                    message: 'Something went wrong'
+                }, {
+                    status: 400
+                });
+            }
+
+            const updateVectorStockLimit = await prisma.vectorStockLimit.update({
+                where: {
+                    userId: user.id
+                },
+                data: {
+                    vectorStock: redeemCode.planCode === 51 ? 10 : redeemCode.planCode === 52 ? 20 : redeemCode.planCode === 53 ? 30 : 0,
+                    planCode: redeemCode.planCode
+                }
+            });
+        }
+
+        if (group8.includes(redeemCode.planCode)) {
+            const plans = await prisma.plan.findMany({
+                where: {
+                    userId: user.id,
+                    planCode: {
+                        in: group8
+                    },
+                    active: true,
+                    endDate: {
+                        gt: new Date()
+                    }
+                }
+            });
+            if (plans.length > 0) {
+                const deactivatePlans = await prisma.plan.updateMany({
+                    where: {
+                        userId: user.id,
+                        planCode: {
+                            in: group8
+                        }
+                    },
+                    data: {
+                        active: false
+                    }
+                });
+
+                const checkLimitDoc = await prisma.vectorStockMonthlyLimit.findUnique({
+                    where: {
+                        userId: user.id
+                    }
+                });
+
+                if (!checkLimitDoc) {
+                    const createLimit = await prisma.vectorStockMonthlyLimit.create({
+                        data: {
+                            userId: user.id,
+                            vectorStock: 0,
+                            planCode: 0
+                        }
+                    });
+                }
+
+                const updateLimit = await prisma.vectorStockMonthlyLimit.update({
+                    where: {
+                        userId: user.id
+                    },
+                    data: {
+                        vectorStock: 0,
+                        planCode: 0
+                    }
+                })
+            }
+
+            const createPlan = await prisma.plan.create({
+                data: {
+                    userId: user.id,
+                    name: redeemCode.name,
+                    startDate: startDate,
+                    endDate: endDate,
+                    planCode: redeemCode.planCode
+                }
+            });
+
+            if (!createPlan) {
+                return Response.json({
+                    message: 'Something went wrong'
+                }, {
+                    status: 400
+                });
+            }
+
+            const updateVectorStockLimit = await prisma.vectorStockMonthlyLimit.update({
+                where: {
+                    userId: user.id
+                },
+                data: {
+                    vectorStock: redeemCode.planCode === 54 ? 100 : redeemCode.planCode === 55 ? 200 : redeemCode.planCode === 56 ? 300 : 0,
+                    planCode: redeemCode.planCode
+                }
+            });
+        }
+
+        if (group9.includes(redeemCode.planCode)) {
             return Response.json({
                 message: 'Coming soon'
             }, {
