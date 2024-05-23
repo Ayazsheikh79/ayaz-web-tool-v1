@@ -54,7 +54,7 @@ export default function Page() {
                             <div className={'space-y-4'}>
                                 {/* @ts-ignore */}
                                 {data.map((plan: any) => (
-                                    <div key={plan.id} className={'border rounded-md p-4 text-sm font-medium space-y-1'}>
+                                    <div key={plan.id} className={`border rounded-md p-4 ${plan.active ? 'bg-gradient-to-r from-emerald-400 to-cyan-400' : 'bg-gradient-to-r from-red-500 to-orange-500 text-white'} text-sm font-medium space-y-1`}>
                                         <div>
                                             Name: {plan.name}
                                         </div>
