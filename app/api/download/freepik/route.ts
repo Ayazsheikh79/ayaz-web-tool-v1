@@ -163,7 +163,7 @@ export async function POST (req: Request) {
                 })
                 return Response.json({
                     message: 'Downloaded',
-                    data: res.data
+                    data: res0.data
                 }, {
                     status: 200
                 })
@@ -207,7 +207,7 @@ export async function POST (req: Request) {
                 })
                 return Response.json({
                     message: 'Downloaded',
-                    data: res.data
+                    data: res1.data
                 }, {
                     status: 200
                 })
@@ -252,7 +252,7 @@ export async function POST (req: Request) {
                 })
                 return Response.json({
                     message: 'Downloaded',
-                    data: res.data
+                    data: res2.data
                 }, {
                     status: 200
                 })
