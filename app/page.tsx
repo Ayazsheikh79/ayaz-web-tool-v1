@@ -20,9 +20,11 @@ export default function Home() {
         try {
             if (!session) {
                 toast.error('You need to login first');
+                return
             }
             if (!redeemCode) {
                 toast.error('Please enter redeem code');
+                return
             }
             setIsRedeeming(true);
             const res = await axios.post('/api/redeem', {
