@@ -175,7 +175,7 @@ export default function Page() {
     const copyCode = async () => {
         try {
             // @ts-ignore
-            const code = `code: ${coupon.code}\nplan: ${coupon.name}\ncredit: ${coupon.credit}\nCreated at: ${new Date(coupon.createdAt).toDateString()}\nPlan Duration: ${coupon.duration} days\nRedeem here: https://winbazar.in/#redeem`
+            const code = `code: ${coupon.code}\nplan: ${coupon.name}\ncredit: ${coupon.credit}\nCreated at: ${new Date(coupon.createdAt).toDateString()}\nPlan Duration: ${coupon.duration} days\nRedeem here: https://tuitionlink.in/#redeem`
             await navigator.clipboard.writeText(code)
             toast.success('Code copied')
         } catch (e) {
