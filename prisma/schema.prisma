@@ -139,3 +139,61 @@ model Credit {
   amount    Float
   endDate   DateTime
 }
+
+model TelegramUser {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  telegramId  Int          @unique
+  username    String?
+  envato      Envato?
+  freepik     FreePik?
+  artlist     Artlist?
+  vectorStock VectorStock?
+  adobestock  Adobestock?
+}
+
+model Envato {
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  user      TelegramUser @relation(fields: [userId], references: [id])
+  userId    String       @unique @db.ObjectId
+  envato    Int          @default(1)
+}
+
+model FreePik {
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  user      TelegramUser @relation(fields: [userId], references: [id])
+  userId    String       @unique @db.ObjectId
+  freepik   Int          @default(1)
+}
+
+model Artlist {
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  user      TelegramUser @relation(fields: [userId], references: [id])
+  userId    String       @unique @db.ObjectId
+  artlist   Int          @default(1)
+}
+
+model VectorStock {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  user        TelegramUser @relation(fields: [userId], references: [id])
+  userId      String       @unique @db.ObjectId
+  vectorStock Int          @default(1)
+}
+
+model Adobestock {
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  user       TelegramUser @relation(fields: [userId], references: [id])
+  userId     String       @unique @db.ObjectId
+  adobestock Int          @default(1)
+}

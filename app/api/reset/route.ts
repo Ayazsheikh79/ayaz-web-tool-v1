@@ -74,6 +74,91 @@ export async function POST (req: Request) {
             }
         });
 
+        const updateArtlistLimits = await prisma.artlistLimit.updateMany({
+            where: {
+                planCode: 41
+            },
+            data: {
+                artlist: 10
+            }
+        });
+
+        const updateArtlistLimits2 = await prisma.artlistLimit.updateMany({
+            where: {
+                planCode: 42
+            },
+            data: {
+                artlist: 20
+            }
+        });
+
+        const updateArtlistLimits3 = await prisma.artlistLimit.updateMany({
+            where: {
+                planCode: 43
+            },
+            data: {
+                artlist: 30
+            }
+        });
+
+        const updateVectorStockLimits = await prisma.vectorStockLimit.updateMany({
+            where: {
+                planCode: 51
+            },
+            data: {
+                vectorStock: 10
+            }
+        });
+
+        const updateVectorStockLimits2 = await prisma.vectorStockLimit.updateMany({
+            where: {
+                planCode: 52
+            },
+            data: {
+                vectorStock: 20
+            }
+        });
+
+        const updateVectorStockLimits3 = await prisma.vectorStockLimit.updateMany({
+            where: {
+                planCode: 53
+            },
+            data: {
+                vectorStock: 30
+            }
+        });
+
+        const envato = await prisma.envato.updateMany({
+            data: {
+                envato: 1
+            }
+        })
+
+        const freePik = await prisma.freePik.updateMany({
+            data: {
+                freepik: 1
+            }
+        });
+
+        const artlist = await prisma.artlist.updateMany({
+            data: {
+                artlist: 1
+            }
+        });
+
+
+        const vectorStock = await prisma.vectorStock.updateMany({
+            data: {
+                vectorStock: 1
+            }
+        });
+
+        const adobestock = await prisma.adobestock.updateMany({
+            data: {
+                adobestock: 1
+            }
+        });
+
         return Response.json({
             message: 'User limits updated successfully.'
         }, {
