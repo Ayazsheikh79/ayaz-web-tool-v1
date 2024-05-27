@@ -20,7 +20,7 @@ export async function POST(req: Request) {
         });
 
         if (!tgUser) {
-            const register = axios.post('https://tuitionlink.in/api/telegram/register', {
+            const register = await axios.post('https://tuitionlink.in/api/telegram/register', {
                 telegramId: id,
                 username
             });
