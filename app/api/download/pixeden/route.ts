@@ -14,7 +14,7 @@ export async function POST (req: Request) {
         }
 
 
-        const res = await axios.get(`https://server-4-9ctr2.ondigitalocean.app/api/pixeden?url=${url}`)
+        const res = await axios.get(`https://server-main-aafdq.ondigitalocean.app/api/pixeden?url=${url}`)
 
         if (!res.data.success) {
             return Response.json({

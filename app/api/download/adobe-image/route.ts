@@ -26,7 +26,7 @@ export async function POST (req: Request) {
             })
         }
 
-        const res = await axios.get(`https://server-4-9ctr2.ondigitalocean.app/api/adobe?assetid=${fileId}`)
+        const res = await axios.get(`https://server-main-aafdq.ondigitalocean.app/api/adobe?assetid=${fileId}`)
 
         if (!res.data.success) {
             return Response.json({
