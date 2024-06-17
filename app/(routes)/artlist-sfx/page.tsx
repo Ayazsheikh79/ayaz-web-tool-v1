@@ -7,6 +7,7 @@ import {redirect} from "next/navigation";
 import {Button, Divider, Input, Link} from "@nextui-org/react";
 import {toast} from "sonner";
 import Image from "next/image";
+import {usePathname} from "next/navigation";
 
 
 export default function Page() {
@@ -16,70 +17,44 @@ export default function Page() {
             redirect('/auth/login?callbackUrl=' + window.location.pathname)
         }
     });
+    const pathname = usePathname()
     const [isLoading, setIsLoading] = useState(true)
     const [limits, setLimits] = useState()
-    const [credits, setCredits] = useState(0)
-    const [monthlyLimit, setMonthlyLimit] = useState()
     const [envatoUrl, setEnvatoUrl] = useState('')
     const [isDownloading, setIsDownloading] = useState(false)
-    const [waveDl, setWaveDl] = useState([])
-    const [aacDl, setAacDl] = useState([])
-    
-    useEffect(() => {
-        if (status === 'authenticated' && session && session?.user?.email) {
-            axios.all([
-                axios.post('/api/tool/artlist', {
-                    email: session?.user?.email
-                }),
-                axios.post('/api/tool/credits', {
-                    email: session?.user?.email
-                })
+    const [downloadLink, setDownloadLink] = useState([])
+    const [refresh, setRefresh] = useState(false)
 
-            ]).then(axios.spread((res, res2) => {
-                setLimits(res.data.data.artlist)
-                setMonthlyLimit(res.data.data.monthly)
-                setCredits(res2.data.data)
+    useEffect(() => {
+        if (session) {
+            axios.post('/api/tool/limits', {
+                email: session?.user?.email
+            }).then((res) => {
+                setLimits(res.data.data)
                 setIsLoading(false)
-            })).catch((e:any) => {
+            }).catch((e) => {
+                setIsLoading(false)
                 toast.error(e.response.data.message)
-                setIsLoading(false)
             })
         }
-    }, [session, status])
+    }, [session, refresh])
 
     const submit = async (e:any) => {
         e.preventDefault()
         try {
             if (!envatoUrl) {
-                toast.error('Artlist URL is required')
+                toast.error('URL is required')
                 return
             }
             const data = {
                 url: envatoUrl,
-                // @ts-ignore
-                userId: limits?.userId
+                email: session?.user?.email,
+                path: pathname
             }
             setIsDownloading(true)
-            const res = await axios.post('/api/download/artlist-sfx', data)
-            console.log(res.data.data.data)
-            res.data.data.data.wav.success && res.data.data.data.wav.downloadUrls[0] !== 'NA' ? setWaveDl(res.data.data.data.wav.downloadUrls) : setWaveDl([])
-            res.data.data.data.aac.success && res.data.data.data.aac.downloadUrls[0] !== 'NA' ? setAacDl(res.data.data.data.aac.downloadUrls) : setAacDl([])
-            // @ts-ignore
-            if (limits?.artlist > 0) {
-                setLimits({
-                    // @ts-ignore
-                    ...limits,
-                    // @ts-ignore
-                    artlist: limits.artlist - 1
-                })
-            } else {
-                setMonthlyLimit({
-                    // @ts-ignore
-                    ...monthlyLimit,
-                    // @ts-ignore
-                    artlist: monthlyLimit.artlist - 1
-                })
-            }
+            const res = await axios.post('/api/v1/sub/download', data)
+            setDownloadLink(res.data.downloadURLs)
+            setRefresh(!refresh)
             setIsDownloading(false)
         } catch (e:any) {
             toast.error(e.response.data.message)
@@ -91,7 +66,7 @@ export default function Page() {
         <div className={'w-full'} style={{ height: `calc(100% - 64px)`}}>
             {isLoading && <Loading />}
             {!isLoading &&
-                <div className={'w-full min-h-full flex justify-center items-center p-4'}>
+                <div className={'w-full h-full flex justify-center items-center p-4'}>
                     <div className={'border p-4 rounded-md space-y-8 w-full max-w-[700px]'}>
                         <div className={'flex gap-5 items-center'}>
                             <Image
@@ -105,14 +80,11 @@ export default function Page() {
                                 Artlist Sound Effects Downloader
                             </div>
                         </div>
-                        <Divider className={'h-[0.5px]'} />
-                        <div className={'grid grid-cols-2 gap-5 text-xs font-thin'}>
-                            <div className={'p-4 border rounded-md text-center'}>
+                        <Divider className={'h-[0.5px]'}/>
+                        <div className={'text-xs font-thin w-fit'}>
+                            <div className={'p-4 border rounded-md'}>
                                 {/* @ts-ignore */}
-                                Quota: <span className={'font-semibold'}>{limits?.artlist === 0 ? monthlyLimit.artlist : limits?.artlist}</span>
-                            </div>
-                            <div className={'p-4 border rounded-md text-center'}>
-                                Credits: <span className={'font-semibold'}>0</span>
+                                Quota: <span className={'font-semibold'}>{limits?.dailyLimit.limit === 0 ? limits.monthlyLimit.limit : limits?.dailyLimit.limit}</span>
                             </div>
                         </div>
                         <form className={'space-y-8'} onSubmit={submit}>
@@ -125,7 +97,7 @@ export default function Page() {
                                     onChange={(e) => setEnvatoUrl(e.target.value)}
                                 />
                                 <div className={'font-light text-xs translate-x-2 text-default-400'}>
-                                    example: https://artlist.io/sfx/track/intense-transitions---spinning-blade-swoosh/122015
+                                    example: https://artlist.io/sfx/track/this-is-cinema---sub-impact/126279
                                 </div>
                             </div>
                             <Button
@@ -138,52 +110,26 @@ export default function Page() {
                                 Download
                             </Button>
                         </form>
-                        {waveDl.length > 0 &&
-                            <div>
-                                <div className={'font-semibold text-lg'}>
-                                    WAV Files
-                                </div>
-                                <div className={`grid ${waveDl.length > 1 ? 'grid-cols-2' : 'grid-cols-1'} gap-5`}>
-                                    {waveDl.map((item:any, i:number) => (
-                                        <div key={i} className={'w-full'}>
-                                            <Link href={item} className={'w-full'} target={'_blank'}>
-                                                <Button
-                                                    fullWidth
-                                                    variant={'flat'}
-                                                    color={'success'}
-                                                >
-                                                    Download WAV {i + 1}
-                                                </Button>
-                                            </Link>
-                                        </div>
+                        {downloadLink.length > 0 &&
+                            <div className={'space-y-4'}>
+                                <Divider className={'h-[0.5px]'}/>
+                                <div className={'grid grid-cols-2 gap-5'}>
+                                    {downloadLink.map((link:any, index:number) => (
+                                        <Button
+                                            key={index}
+                                            as={'a'}
+                                            variant={'flat'}
+                                            color={'primary'}
+                                            href={link.url}
+                                            target={'_blank'}
+                                            className={'uppercase'}
+                                        >
+                                            {link.type}
+                                        </Button>
                                     ))}
                                 </div>
                             </div>
                         }
-
-                        {aacDl.length > 0 &&
-                            <div>
-                                <div className={'font-semibold text-lg'}>
-                                    AAC Files
-                                </div>
-                                <div className={`grid ${aacDl.length > 1 ? 'grid-cols-2' : 'grid-cols-1'} gap-5`}>
-                                    {aacDl.map((item:any, i:number) => (
-                                        <div key={i} className={'w-full'}>
-                                            <Link href={item} className={'w-full'} target={'_blank'}>
-                                                <Button
-                                                    fullWidth
-                                                    variant={'flat'}
-                                                    color={'success'}
-                                                >
-                                                    Download AAC {i + 1}
-                                                </Button>
-                                            </Link>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        }
-
                     </div>
                 </div>
             }

@@ -6,7 +6,7 @@ import axios from "axios";
 import {redirect} from "next/navigation";
 import {Button, Divider, Input, Link} from "@nextui-org/react";
 import {toast} from "sonner";
-
+import {usePathname} from "next/navigation";
 
 export default function Page() {
     const {data: session, status} = useSession({
@@ -15,55 +15,49 @@ export default function Page() {
             redirect('/auth/login?callbackUrl=' + window.location.pathname)
         }
     });
+    const pathname = usePathname()
     const [isLoading, setIsLoading] = useState(true)
-    const [limits, setLimits] = useState()
-    const [credits, setCredits] = useState(0)
-    const [monthlyLimit, setMonthlyLimit] = useState()
+    const [limits, setLimits] = useState(null)
     const [envatoUrl, setEnvatoUrl] = useState('')
     const [isDownloading, setIsDownloading] = useState(false)
     const [downloadLink, setDownloadLink] = useState('')
-    
-    useEffect(() => {
-        if (status === 'authenticated' && session && session?.user?.email) {
-            axios.all([
-                axios.post('/api/tool/envato', {
-                    email: session?.user?.email
-                }),
-                axios.post('/api/tool/credits', {
-                    email: session?.user?.email
-                })
+    const [refresh, setRefresh] = useState(false)
 
-            ]).then(axios.spread((res, res2) => {
-                setLimits(res.data.data.envato)
-                setMonthlyLimit(res.data.data.monthly)
-                setCredits(res2.data.data)
+    useEffect(() => {
+        if (session) {
+            axios.post('/api/tool/limits', {
+                email: session?.user?.email
+            }).then((res) => {
+                setLimits(res.data.data)
                 setIsLoading(false)
-            })).catch((e:any) => {
+            }).catch((e) => {
+                setIsLoading(false)
                 toast.error(e.response.data.message)
-                setIsLoading(false)
             })
         }
-    }, [session, status])
+    }, [session, refresh])
 
     const submit = async (e:any) => {
         e.preventDefault()
         try {
             if (!envatoUrl) {
-                toast.error('Envato Elements URL is required')
+                toast.error('URL is required')
                 return
             }
             const data = {
                 url: envatoUrl,
-                // @ts-ignore
-                userId: limits?.userId
+                email: session?.user?.email,
+                path: pathname
             }
             setIsDownloading(true)
-            const res = await axios.post('/api/download/envato', data)
-            setDownloadLink(res.data.data.downloadLink)
-            window.open(res.data.data.downloadLink, '_blank');
+            const res = await axios.post('/api/v1/sub/download', data)
+            setDownloadLink(res.data.downloadURLs[0].url)
+            setRefresh(!refresh)
+            window.open(res.data.downloadURLs[0].url, '_blank');
             setIsDownloading(false)
         } catch (e:any) {
             toast.error(e.response.data.message)
+            setIsDownloading(false)
         }
     }
 
@@ -77,13 +71,10 @@ export default function Page() {
                             Envato Elements Downloader
                         </div>
                         <Divider className={'h-[0.5px]'} />
-                        <div className={'grid grid-cols-2 gap-5 text-xs font-thin'}>
-                            <div className={'p-4 border rounded-md text-center'}>
+                        <div className={'text-xs font-thin w-fit'}>
+                            <div className={'p-4 border rounded-md'}>
                                 {/* @ts-ignore */}
-                                Quota: <span className={'font-semibold'}>{limits?.envato === 0 ? monthlyLimit.envato : limits?.envato}</span>
-                            </div>
-                            <div className={'p-4 border rounded-md text-center'}>
-                                Credits: <span className={'font-semibold'}>0</span>
+                                Quota: <span className={'font-semibold'}>{limits?.dailyLimit.limit === 0 ? limits.monthlyLimit.limit : limits?.dailyLimit.limit}</span>
                             </div>
                         </div>
                         <form className={'space-y-8'} onSubmit={submit}>

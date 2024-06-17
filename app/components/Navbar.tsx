@@ -8,6 +8,12 @@ import { IoCloudDownloadOutline } from "react-icons/io5";
 import {useRouter} from "next/navigation";
 import { IoHomeOutline } from "react-icons/io5";
 import { CiUser } from "react-icons/ci";
+import { MdOutlineAttachMoney } from "react-icons/md";
+import { MdDashboard } from "react-icons/md";
+import { IoIosPricetag } from "react-icons/io";
+import { MdDownload } from "react-icons/md";
+import { RiMessage2Fill } from "react-icons/ri";
+import { MdOutlineDeveloperMode } from "react-icons/md";
 
 export default function NavbarComponent() {
     const router = useRouter();
@@ -25,19 +31,24 @@ export default function NavbarComponent() {
             href: '/profile'
         },
         {
-            name: 'Freepik Downloader',
+            name: 'Downloader / Tools',
             icon: <IoCloudDownloadOutline  />,
-            href: '/freepik'
+            href: '/tools'
         },
-        // {
-        //     name: 'Adobe Stock Downloader',
-        //     icon: <IoCloudDownloadOutline  />,
-        //     href: '/tool/adobe'
-        // },
         {
-            name : 'Envato Elements Downloader',
-            icon: <IoCloudDownloadOutline  />,
-            href: '/envato'
+            name: 'Pricing',
+            icon: <MdOutlineAttachMoney   />,
+            href: '/pricing'
+        },
+        {
+            name: 'API / Developer',
+            icon: <MdOutlineDeveloperMode    />,
+            href: '/developer'
+        },
+        {
+            name: 'Contact',
+            icon: <RiMessage2Fill/>,
+            href: '/contact'
         },
         {
             name: 'Sign Out',
@@ -46,24 +57,47 @@ export default function NavbarComponent() {
     ];
 
     return (
-        <Navbar onMenuOpenChange={setIsMenuOpen} isBordered={true} className={'h-16'}>
+        <Navbar onMenuOpenChange={setIsMenuOpen} isBordered={true} className={'h-16 select-none'}>
             <NavbarContent>
                 <NavbarBrand
                     className={'cursor-pointer'}
                 >
                     <Link href={'/'} className={'text-black'}>
                         <p className="font-bold text-inherit">
-                            Envato Downloader
+                            PremiumGfx
                         </p>
                     </Link>
                 </NavbarBrand>
             </NavbarContent>
 
-            <NavbarContent className="hidden sm:flex gap-4" justify="center">
+            <NavbarContent className="hidden sm:flex gap-8 text-medium font-medium text-default-700" justify="center">
                 <NavbarItem>
-                    <Link color="foreground" href="/" className={'flex gap-2 justify-center items-center'}>
-                        <IoHomeOutline />
-                        Home
+                    <Link color="foreground" href="/" className={'flex gap-1 text-default-700 justify-center items-center'}>
+                        <MdDashboard />
+                            Dashboard
+                    </Link>
+                </NavbarItem>
+                <NavbarItem>
+                    <Link color="foreground" href={'/pricing'} className={'flex gap-1 text-default-700 justify-center items-center'}>
+                        <IoIosPricetag />
+                        Pricing
+                    </Link>
+                </NavbarItem>
+                <NavbarItem>
+                    <Link color="foreground" href={'/developer'} className={'flex gap-1 text-default-700 justify-center items-center'}>
+                        # API
+                    </Link>
+                </NavbarItem>
+                <NavbarItem>
+                    <Link color="foreground" href={'/tools'} className={'flex gap-1 text-default-700 justify-center items-center'}>
+                        <MdDownload />
+                        Download
+                    </Link>
+                </NavbarItem>
+                <NavbarItem>
+                    <Link color="foreground" href={'/contact'} className={'flex gap-1 text-default-700 justify-center items-center'}>
+                        <RiMessage2Fill  />
+                        Contact
                     </Link>
                 </NavbarItem>
             </NavbarContent>

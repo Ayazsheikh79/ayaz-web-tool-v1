@@ -4,8 +4,9 @@ import {useState, useEffect} from "react";
 import Loading from "@/app/components/Loading";
 import axios from "axios";
 import {redirect} from "next/navigation";
-import {Button, Divider, Input} from "@nextui-org/react";
+import {Button, Divider, Input, Link} from "@nextui-org/react";
 import {toast} from "sonner";
+import {usePathname} from "next/navigation";
 
 
 export default function Page() {
@@ -15,52 +16,45 @@ export default function Page() {
             redirect('/auth/login?callbackUrl=' + window.location.pathname)
         }
     });
+    const pathname = usePathname()
     const [isLoading, setIsLoading] = useState(true)
-    const [limits, setLimits] = useState()
-    const [credits, setCredits] = useState(0)
-    const [monthlyLimit, setMonthlyLimit] = useState()
-    const [isDownloading, setIsDownloading] = useState(false)
-    const [downloadLink, setDownloadLink] = useState('hi')
+    const [limits, setLimits] = useState(null)
     const [freepikUrl, setFreepikUrl] = useState('')
-    
-    useEffect(() => {
-        if (status === 'authenticated' && session && session?.user?.email) {
-            axios.all([
-                axios.post('/api/tool/freepik', {
-                    email: session?.user?.email
-                }),
-                axios.post('/api/tool/credits', {
-                    email: session?.user?.email
-                })
+    const [isDownloading, setIsDownloading] = useState(false)
+    const [downloadLink, setDownloadLink] = useState('')
+    const [refresh, setRefresh] = useState(false)
 
-            ]).then(axios.spread((res, res2) => {
-                setLimits(res.data.data.freepik)
-                setMonthlyLimit(res.data.data.monthly)
-                setCredits(res2.data.data)
+    useEffect(() => {
+        if (session) {
+            axios.post('/api/tool/limits', {
+                email: session?.user?.email
+            }).then((res) => {
+                setLimits(res.data.data)
                 setIsLoading(false)
-            })).catch((e:any) => {
+            }).catch((e) => {
+                setIsLoading(false)
                 toast.error(e.response.data.message)
-                setIsLoading(false)
             })
         }
-    }, [session, status])
+    }, [session, refresh])
 
-const submit = async (e:any) => {
+    const submit = async (e:any) => {
         e.preventDefault()
         try {
             if (!freepikUrl) {
-                toast.error('Freepik URL is required')
+                toast.error('URL is required')
                 return
             }
             const data = {
                 url: freepikUrl,
-                // @ts-ignore
-                userId: limits?.userId
+                email: session?.user?.email,
+                path: pathname
             }
             setIsDownloading(true)
-            const res = await axios.post('/api/download/freepik', data)
-            setDownloadLink(res.data.data.downloadLink)
-            window.open(res.data.data.downloadLink, '_blank');
+            const res = await axios.post('/api/v1/sub/download', data)
+            setDownloadLink(res.data.downloadURLs[0].url)
+            setRefresh(!refresh)
+            window.open(res.data.downloadURLs[0].url, '_blank');
             setIsDownloading(false)
         } catch (e:any) {
             toast.error(e.response.data.message)
@@ -78,13 +72,10 @@ const submit = async (e:any) => {
                             Freepik Downloader
                         </div>
                         <Divider className={'h-[0.5px]'} />
-                        <div className={'grid grid-cols-2 gap-5 text-xs font-thin'}>
+                        <div className={'w-fit text-xs font-thin'}>
                             <div className={'p-4 border rounded-md text-center'}>
                                 {/* @ts-ignore */}
-                                Quota: <span className={'font-semibold'}>{limits?.freepik === 0 ? monthlyLimit.freepik : limits?.freepik}</span>
-                            </div>
-                            <div className={'p-4 border rounded-md text-center'}>
-                                Credits: <span className={'font-semibold'}>0</span>
+                                Quota: <span className={'font-semibold'}>{limits?.dailyLimit.limit === 0 ? limits.monthlyLimit.limit : limits?.dailyLimit.limit}</span>
                             </div>
                         </div>
                         <form className={'space-y-8'} onSubmit={submit}>
@@ -105,10 +96,19 @@ const submit = async (e:any) => {
                                 variant={'flat'}
                                 color={'secondary'}
                                 type={'submit'}
+                                isLoading={isDownloading}
                             >
                                 Download
                             </Button>
                         </form>
+                        {downloadLink &&
+                            <div className={'font-medium text-sm'}>
+                                Your download will start automatically. If it doesn‘t, <Link className={'font-semibold'}
+                                                                                             target={'_blank'}
+                                                                                             href={downloadLink}>click
+                                here</Link>
+                            </div>
+                        }
                     </div>
                 </div>
             }

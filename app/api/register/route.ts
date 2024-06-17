@@ -2,7 +2,7 @@ import prisma from "@/app/libs/prismadb";
 
 export async function POST(req: Request) {
     const body = await req.json();
-    const { name, email, password, tgId } = body;
+    const { name, email, password } = body;
 
     if (!name || !email || !password) {
         return Response.json({
@@ -51,29 +51,77 @@ export async function POST(req: Request) {
             });
         }
 
-        const createFreepikLimit = await prisma.freePikLimit.create({
-            data: {
-                userId: user.id
-            }
-        });
-
-        const createEnvatoLimit = await prisma.envatoLimit.create({
+        const createDailyLimit = await prisma.dailyLimit.create({
             data: {
                 userId: user.id,
             }
         })
 
-        const envatoMonthlyLimit = await prisma.envatoMonthlyLimit.create({
-            data: {
-                userId: user.id,
-            }
-        });
+        if (!createDailyLimit) {
+            await prisma.user.delete({
+                where: {
+                    id: user.id
+                }
+            })
+            return Response.json({
+                message: 'Error creating account'
+            }, {
+                status: 400
+            });
+        }
 
-        const freepikMonthlyLimit = await prisma.freePikMonthlyLimit.create({
+        const createMonthlyLimit = await prisma.monthlyLimit.create({
             data: {
                 userId: user.id,
             }
-        });
+        })
+
+        if (!createMonthlyLimit) {
+            await prisma.user.delete({
+                where: {
+                    id: user.id
+                }
+            })
+            await prisma.dailyLimit.delete({
+                where: {
+                    userId: user.id
+                }
+            })
+            return Response.json({
+                message: 'Error creating account'
+            }, {
+                status: 400
+            });
+        }
+
+        const credit = await prisma.credit.create({
+            data: {
+                userId: user.id,
+            }
+        })
+
+        if (!credit) {
+            await prisma.user.delete({
+                where: {
+                    id: user.id
+                }
+            })
+            await prisma.dailyLimit.delete({
+                where: {
+                    userId: user.id
+                }
+            })
+            await prisma.monthlyLimit.delete({
+                where: {
+                    userId: user.id
+                }
+            })
+            return Response.json({
+                message: 'Error creating account'
+            }, {
+                status: 400
+            });
+        }
 
         return Response.json({
             message: 'Account created successfully'

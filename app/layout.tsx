@@ -6,12 +6,13 @@ import SessionProvider from "@/app/components/SessionProvider";
 import { Toaster} from 'sonner'
 import {Providers} from "./providers";
 import NavbarComponent from "@/app/components/Navbar";
+import Footer from "@/app/components/Footer";
 
 const rubik = Rubik({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "Envato Downloader",
-    description: "Best tool for downloading envato, freepik and adobe stock items.",
+    title: "PremiumGfx",
+    description: "Best place to get premium graphics for free and paid",
 };
 
 export default async function RootLayout({
