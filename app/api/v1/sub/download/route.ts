@@ -649,6 +649,7 @@ export async function POST(req: Request) {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/pixeden`, {
                     url
                 });
+
                 if (!res.data.success) {
                     return Response.json({
                         message: 'Failed to download file'
