@@ -2,7 +2,7 @@ import prisma from "@/app/libs/prismadb";
 import axios from "axios";
 
 
-const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvZ2V0c3RvY2tzLm5ldFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTcxNzQ1ODc1NCwibmJmIjoxNzE3NDU4NzU0LCJqdGkiOiJSWnUxT1BHVHBuTGdHdVpHIiwic3ViIjoyMTM4OSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.QZ3-ktTmURK_Q1XOZW-gYvUx4rK9eR_I0OIWDsmOfTY'
+const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvZ2V0c3RvY2tzLm5ldFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTcxODY4ODgwNiwibmJmIjoxNzE4Njg4ODA2LCJqdGkiOiJ0SkVOZ0Mxam5qSVhuTDF3Iiwic3ViIjoxODc5NywicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.7YyThou_0D4Wo2l_6Zo3OlXFQ1Vw96vKBImEZTDa_uw'
 
 export async function POST(req: Request) {
     const body = await req.json();
