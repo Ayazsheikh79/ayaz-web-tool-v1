@@ -31,6 +31,8 @@ export default function Page() {
             redirect('/auth/login?callbackUrl=' + window.location.pathname)
         }
     });
+
+    const baseUrl = process.env.NEXT_PUBLIC_NEXTAUTH_URL;
     const router = useRouter();
     const searchParams = useSearchParams();
     const manageUser = searchParams.get('user');
@@ -96,7 +98,7 @@ export default function Page() {
     }
     const copyCode = async () => {
         // @ts-ignore
-        const codeData = `Code: ${code?.code}\nPlan: ${code?.name}\nCreated At: ${new Date(code?.createdAt).toLocaleString()}\nRedeem here: https://premiumgfx.shop/#redeem`;
+        const codeData = `Code: ${code?.code}\nPlan: ${code?.name}\nCreated At: ${new Date(code?.createdAt).toLocaleString()}\nRedeem here: ${baseUrl}/#redeem`;
 
         try {
             await navigator.clipboard.writeText(codeData);
@@ -284,7 +286,7 @@ export default function Page() {
                                                         Created At: <span className={'text-danger'}>{new Date(code.createdAt).toLocaleString()}</span>
                                                     </div>
                                                     <div>
-                                                        Redeem here: <Link href={'https://premiumgfx.shop/#redeem'} className={'text-primary'}>https://premiumgfx.shop/#redeem</Link>
+                                                        Redeem here: <Link href={'https://premiumgfx.shop/#redeem'} className={'text-primary'}>{baseUrl}/#redeem</Link>
                                                     </div>
                                                     <Button
                                                         color={'primary'}
