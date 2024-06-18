@@ -14,6 +14,7 @@ import { IoIosPricetag } from "react-icons/io";
 import { MdDownload } from "react-icons/md";
 import { RiMessage2Fill } from "react-icons/ri";
 import { MdOutlineDeveloperMode } from "react-icons/md";
+import Image from "next/image";
 
 export default function NavbarComponent() {
     const router = useRouter();
@@ -63,9 +64,12 @@ export default function NavbarComponent() {
                     className={'cursor-pointer'}
                 >
                     <Link href={'/'} className={'text-black'}>
-                        <p className="font-bold text-inherit">
-                            PremiumGfx
-                        </p>
+                        <Image
+                            src={'/logo.png'}
+                            alt={'PremiumGFX'}
+                            width={150}
+                            height={50}
+                        />
                     </Link>
                 </NavbarBrand>
             </NavbarContent>
