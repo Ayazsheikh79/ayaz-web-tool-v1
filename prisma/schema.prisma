@@ -82,3 +82,9 @@ model Download {
   name      String
   type      String?
 }
+
+model PixedenToken {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  token     String
+}

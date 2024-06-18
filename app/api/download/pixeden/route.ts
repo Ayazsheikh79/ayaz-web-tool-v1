@@ -14,6 +14,18 @@ export async function POST (req: Request) {
             })
         }
 
+        const pixeden = await prisma.pixedenToken.findFirst()
+
+        if (!pixeden) {
+            return Response.json({
+                message: 'Pixeden token not found'
+            }, {
+                status: 404
+            })
+        }
+
+        const bearerToken = await pixeden.token;
+
         const urlParts = await url.split('/').slice(3)
 
         const res = await axios.post(
@@ -44,7 +56,7 @@ export async function POST (req: Request) {
                 headers: {
                     'accept': '*/*',
                     'accept-language': 'en-US,en;q=0.9',
-                    'authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQ2Yjk1MjBiMDM5YTExYWYwZmU0YzE5IiwidXNlcm5hbWUiOiJHdmlwIiwiY3VzdG9tZXJJZCI6IjE0OTA1NTY1MzM5IiwiZW1haWwiOiJ3ZWx0b25jbm5AZ21haWwuY29tIiwibWVtYmVyVHlwZSI6InllYXJseSIsIm1lbWJlclZhcmlhdGlvbiI6InBybyIsImVtYWlsVmVyaWZpZWQiOnRydWV9LCJpYXQiOjE3MTg2ODg5NDIsImV4cCI6MTcxODY5MjU0Mn0.zi1b3g2V2CqjVFiV-2T-bi9UlkqVnBjFmt74ENjrFmA x-pxdn-token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6eyJpZCI6IjY0NmI5NTIwYjAzOWExMWFmMGZlNGMxOSJ9LCJtZW1iZXJUeXBlIjoieWVhcmx5IiwibWVtYmVyVmFyaWF0aW9uIjoicHJvIiwiZW1haWxWZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzE4Njg4OTQyfQ.H5jSLl5UiZuHs3ioYuxI68FMyz68cRhgIOzUPA2TVX`,
+                    'authorization': `Bearer ${bearerToken}`,
                     'content-type': 'application/json',
                     'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"',
                     'sec-ch-ua-mobile': '?0',
