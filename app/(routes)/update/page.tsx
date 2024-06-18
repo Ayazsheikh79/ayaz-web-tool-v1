@@ -11,20 +11,8 @@ import {motion} from "framer-motion";
 import {
     Button,
     Divider, Input,
-    Link,
-    Table,
-    TableBody,
-    TableCell,
-    TableColumn,
-    TableHeader,
-    TableRow
 } from "@nextui-org/react";
-import {dailyDownloadPlan, monthlyDownloadPlan, creditPlan} from '@/app/data/plans'
 import {toast} from "sonner";
-import { IoReload } from "react-icons/io5";
-import {useSearchParams} from "next/navigation";
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
 
 export default function Page() {
     const {data: session, status} = useSession({
@@ -99,7 +87,7 @@ export default function Page() {
                                     type={'submit'}
                                     isLoading={isDownloading}
                                 >
-                                    Update Pixden
+                                    Update
                                 </Button>
                             </form>
                         </div>
