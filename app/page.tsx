@@ -197,7 +197,7 @@ export default function Home() {
                           </div>
                           <div className={'bg-white rounded-sm shadow-sm p-4 space-y-4'}>
                               <div className={'text-secondary'}>
-                                  Our Tools
+                                  Trending Tools
                               </div>
                               <Divider/>
                               <div className={'space-y-2'}>
@@ -253,10 +253,10 @@ export default function Home() {
                                               <TableCell>
                                                   <div className={'flex items-center gap-2 capitalize'}>
                                                       <div className={'rounded-full w-8 h-8 overflow-hidden flex justify-center items-center border'}>
-                                                          <Image src={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ61AcQ3S7yYjYGw_dDyXv7y3mSYrZJeIPFvQ&s'} width={32} height={32}
-                                                                 alt={'Artlist'}/>
+                                                          <Image src={'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Vecteezy_logo.svg/2044px-Vecteezy_logo.svg.png'} width={32} height={32}
+                                                                 alt={'vecteezy'}/>
                                                       </div>
-                                                      <span>Artlist Music</span>
+                                                      <span>Vecteezy</span>
                                                   </div>
                                               </TableCell>
                                               <TableCell>
