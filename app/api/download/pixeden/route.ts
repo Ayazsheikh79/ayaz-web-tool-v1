@@ -25,6 +25,7 @@ export async function POST (req: Request) {
         }
 
         const bearerToken = await pixeden.token;
+        console.log(bearerToken)
 
         const urlParts = await url.split('/').slice(3)
 
