@@ -264,7 +264,7 @@ export default function Home() {
                                                       color={'success'}
                                                       size={'sm'}
                                                       variant={'flat'}
-                                                      onClick={() => router.push('/artlist-music')}
+                                                      onClick={() => router.push('/vecteezy')}
                                                   >
                                                       Access
                                                   </Button>
