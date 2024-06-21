@@ -51,7 +51,7 @@ const providers = [
 
     { provider: 'Vecteezy', price: 0.15, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Vecteezy_logo.svg/2044px-Vecteezy_logo.svg.png', url: 'https://www.vecteezy.com/'},
 
-    {provider: 'Envato ELements', price: 0.5, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuA7ZTMWmVQhL_qZE7Z750dpoQKTSETbbwZw&s', url: 'https://elements.envato.com/'},
+    {provider: 'Envato ELements', price: 0.1, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuA7ZTMWmVQhL_qZE7Z750dpoQKTSETbbwZw&s', url: 'https://elements.envato.com/'},
 
     {provider: 'AdobeStock', price: 0.1, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAr11v9dc5tnsgTHkkzkD62Sb6JnO8xs3ppA&s', url: 'https://stock.adobe.com/images/'},
 
