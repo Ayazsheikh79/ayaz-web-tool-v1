@@ -24,7 +24,7 @@ export async function POST (req: Request) {
             })
         }
 
-        const res = await axios.get(`https://server-main-aafdq.ondigitalocean.app/api/artlist-templates?fileId=${fileId}`)
+        const res = await axios.get(`https://server-4-9ctr2.ondigitalocean.app/api/artlist-templates?fileid=${fileId}`)
 
         if (!res.data.success) {
             return Response.json({
