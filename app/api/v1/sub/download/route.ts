@@ -236,62 +236,62 @@ export async function POST(req: Request) {
                 })
             }
         }
+        // if (toolIndex === 2) {
+        //     try {
+        //         const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/adobe-image`, {
+        //             url
+        //         });
+        //         if (!res.data.success) {
+        //             return Response.json({
+        //                 message: 'Failed to download file'
+        //             }, {
+        //                 status: 400
+        //             })
+        //         }
+        //
+        //         if (dailyLimit.limit < 1) {
+        //             await prisma.monthlyLimit.update({
+        //                 where: {
+        //                     userId: user.id
+        //                 },
+        //                 data: {
+        //                     limit: {
+        //                         decrement: 1
+        //                     }
+        //                 }
+        //             })
+        //         }
+        //
+        //         if (dailyLimit.limit > 0) {
+        //             await prisma.dailyLimit.update({
+        //                 where: {
+        //                     userId: user.id
+        //                 },
+        //                 data: {
+        //                     limit: {
+        //                         decrement: 1
+        //                     }
+        //                 }
+        //             })
+        //         }
+        //         return Response.json({
+        //             success: true,
+        //             message: 'Downloaded',
+        //             downloadURLs: [
+        //                 {type: 'file', url: res.data.data.downloadLink}
+        //             ]
+        //         }, {
+        //             status: 200
+        //         })
+        //     } catch (e) {
+        //         return Response.json({
+        //             message: 'Failed to download file'
+        //         }, {
+        //             status: 400
+        //         })
+        //     }
+        // }
         if (toolIndex === 2) {
-            try {
-                const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/adobe-image`, {
-                    url
-                });
-                if (!res.data.success) {
-                    return Response.json({
-                        message: 'Failed to download file'
-                    }, {
-                        status: 400
-                    })
-                }
-
-                if (dailyLimit.limit < 1) {
-                    await prisma.monthlyLimit.update({
-                        where: {
-                            userId: user.id
-                        },
-                        data: {
-                            limit: {
-                                decrement: 1
-                            }
-                        }
-                    })
-                }
-
-                if (dailyLimit.limit > 0) {
-                    await prisma.dailyLimit.update({
-                        where: {
-                            userId: user.id
-                        },
-                        data: {
-                            limit: {
-                                decrement: 1
-                            }
-                        }
-                    })
-                }
-                return Response.json({
-                    success: true,
-                    message: 'Downloaded',
-                    downloadURLs: [
-                        {type: 'file', url: res.data.data.downloadLink}
-                    ]
-                }, {
-                    status: 200
-                })
-            } catch (e) {
-                return Response.json({
-                    message: 'Failed to download file'
-                }, {
-                    status: 400
-                })
-            }
-        }
-        if (toolIndex === 3) {
             try {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/creative-fabrica`, {
                     url
@@ -346,7 +346,7 @@ export async function POST(req: Request) {
                 })
             }
         }
-        if (toolIndex === 4) {
+        if (toolIndex === 3) {
             try {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/artlist-music`, {
                     url
@@ -403,7 +403,7 @@ export async function POST(req: Request) {
                 })
             }
         }
-        if (toolIndex === 5) {
+        if (toolIndex === 4) {
             try {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/artlist-footage`, {
                     url
@@ -461,7 +461,7 @@ export async function POST(req: Request) {
                 })
             }
         }
-        if (toolIndex === 6) {
+        if (toolIndex === 5) {
             try {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/artlist-sfx`, {
                     url
@@ -518,7 +518,7 @@ export async function POST(req: Request) {
                 })
             }
         }
-        if (toolIndex === 7) {
+        if (toolIndex === 6) {
             try {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/artlist-templates`, {
                     url
@@ -586,7 +586,7 @@ export async function POST(req: Request) {
                 })
             }
         }
-        if (toolIndex === 8) {
+        if (toolIndex === 7) {
             try {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/artgrid`, {
                     url
@@ -644,64 +644,64 @@ export async function POST(req: Request) {
                 })
             }
         }
-        if (toolIndex === 9) {
-            try {
-                const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/pixeden`, {
-                    url
-                });
-
-                if (!res.data.success) {
-                    return Response.json({
-                        message: 'Failed to download file'
-                    }, {
-                        status: 400
-                    })
-                }
-
-                if (dailyLimit.limit < 1) {
-                    await prisma.monthlyLimit.update({
-                        where: {
-                            userId: user.id
-                        },
-                        data: {
-                            limit: {
-                                decrement: 1
-                            }
-                        }
-                    })
-                }
-
-                if (dailyLimit.limit > 0) {
-                    await prisma.dailyLimit.update({
-                        where: {
-                            userId: user.id
-                        },
-                        data: {
-                            limit: {
-                                decrement: 1
-                            }
-                        }
-                    })
-                }
-
-                return Response.json({
-                    success: true,
-                    message: 'Downloaded',
-                    downloadURLs: [
-                        {type: 'file', url: res.data.data.downloadUrl}
-                    ]
-                }, {
-                    status: 200
-                })
-            } catch (e) {
-                return Response.json({
-                    message: 'Failed to download file'
-                }, {
-                    status: 400
-                })
-            }
-        }
-        if (toolIndex === 10) {
+        // if (toolIndex === 8) {
+        //     try {
+        //         const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/pixeden`, {
+        //             url
+        //         });
+        //
+        //         if (!res.data.success) {
+        //             return Response.json({
+        //                 message: 'Failed to download file'
+        //             }, {
+        //                 status: 400
+        //             })
+        //         }
+        //
+        //         if (dailyLimit.limit < 1) {
+        //             await prisma.monthlyLimit.update({
+        //                 where: {
+        //                     userId: user.id
+        //                 },
+        //                 data: {
+        //                     limit: {
+        //                         decrement: 1
+        //                     }
+        //                 }
+        //             })
+        //         }
+        //
+        //         if (dailyLimit.limit > 0) {
+        //             await prisma.dailyLimit.update({
+        //                 where: {
+        //                     userId: user.id
+        //                 },
+        //                 data: {
+        //                     limit: {
+        //                         decrement: 1
+        //                     }
+        //                 }
+        //             })
+        //         }
+        //
+        //         return Response.json({
+        //             success: true,
+        //             message: 'Downloaded',
+        //             downloadURLs: [
+        //                 {type: 'file', url: res.data.data.downloadUrl}
+        //             ]
+        //         }, {
+        //             status: 200
+        //         })
+        //     } catch (e) {
+        //         return Response.json({
+        //             message: 'Failed to download file'
+        //         }, {
+        //             status: 400
+        //         })
+        //     }
+        // }
+        if (toolIndex === 8) {
             try {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/vecteezy`, {
                     url
