@@ -88,12 +88,12 @@ export default function Login() {
                     <div className={'w-full max-w-[35rem] border p-4 rounded-md'}>
                         <div className={'space-y-8'}>
                             <div className={'font-semibold text-2xl'}>
-                                Login to your account
+                                Faça login na sua conta
                             </div>
                             <div>
                                 <form className={'space-y-4'} onSubmit={handleLogin}>
                                     <Input
-                                        label={'Email'}
+                                        label={'E-mail'}
                                         placeholder={'Enter your email'}
                                         variant={'flat'}
                                         className={'w-full'}
@@ -102,7 +102,7 @@ export default function Login() {
                                     />
                                     <div>
                                         <Input
-                                            label="Password"
+                                            label="Senha"
                                             variant="flat"
                                             placeholder="Enter your password"
                                             endContent={
@@ -119,7 +119,7 @@ export default function Login() {
                                             onChange={(e) => setPassword(e.target.value)}
                                         />
                                         <div className={'text-end'}>
-                                            <Link href={'https://t.me/AyazSheikh079'}
+                                            <Link href={'https://t.me/sododemae'}
                                                   className={'text-primary hover:underline text-xs text-opacity-70 hover:text-opacity-100'}>
                                                 Forgot password?
                                             </Link>
@@ -137,7 +137,7 @@ export default function Login() {
                                     <Divider />
                                     <div className={'flex justify-center'}>
                                         <p className={'text-sm'}>
-                                            Don&apos;t have an account? <Link className={'text-primary hover:underline text-sm'} href={'/auth/signup'}>Sign up</Link>
+                                            Não tem uma conta? <Link className={'text-primary hover:underline text-sm'} href={'/auth/signup'}>Sign up</Link>
                                         </p>
                                     </div>
                                 </form>

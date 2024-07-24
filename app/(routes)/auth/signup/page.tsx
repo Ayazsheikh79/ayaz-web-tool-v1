@@ -99,12 +99,12 @@ export default function Signup() {
                     <div className={'w-full max-w-[35rem] border p-4 rounded-md'}>
                         <div className={'space-y-8'}>
                             <div className={'font-semibold text-2xl'}>
-                                Create an account
+                                Crie a sua conta aqui
                             </div>
                             <div>
                                 <form className={'space-y-4'} onSubmit={handleSignup}>
                                     <Input
-                                        label={'Full name'}
+                                        label={'nome completo'}
                                         placeholder={'Enter your full name'}
                                         variant={'flat'}
                                         className={'w-full'}
@@ -112,7 +112,7 @@ export default function Signup() {
                                         onChange={(e) => setName(e.target.value)}
                                     />
                                     <Input
-                                        label={'Email'}
+                                        label={'e-mail'}
                                         placeholder={'Enter your email'}
                                         variant={'flat'}
                                         className={'w-full'}
@@ -120,7 +120,7 @@ export default function Signup() {
                                         onChange={(e) => setEmail(e.target.value)}
                                     />
                                     <Input
-                                        label="Password"
+                                        label="senha"
                                         variant="flat"
                                         placeholder="Enter your password"
                                         endContent={
@@ -151,7 +151,7 @@ export default function Signup() {
                                     <Divider/>
                                     <div className={'flex justify-center'}>
                                         <p className={'text-sm'}>
-                                            Already have an account? <Link
+                                            já tem uma conta? <Link
                                             className={'text-primary hover:underline text-sm'} href={'/auth/login'}> Login
                                         </Link>
                                         </p>

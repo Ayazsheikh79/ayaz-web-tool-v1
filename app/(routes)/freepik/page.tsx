@@ -76,7 +76,7 @@ export default function Page() {
                         >
                             <Button
                                 variant={'flat'}
-                                color={'secondary'}
+                                color={'primary'}
                                 fullWidth
                             >
                                 Acessar o Freepik
@@ -89,7 +89,7 @@ export default function Page() {
                         >
                             <Button
                                 variant={'flat'}
-                                color={'secondary'}
+                                color={'primary'}
                                 fullWidth
                             >
                                 Retornar ao painel
@@ -121,7 +121,7 @@ export default function Page() {
                             <Button
                                 fullWidth
                                 variant={'flat'}
-                                color={'secondary'}
+                                color={'primary'}
                                 type={'submit'}
                             >
                                 Download

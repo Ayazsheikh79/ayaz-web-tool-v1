@@ -75,7 +75,7 @@ export default function Home() {
                           <form className={'w-full h-full'} onSubmit={submit}>
                               <div className={'w-full h-full flex justify-center items-center flex-col gap-8 '}>
                                   <Input
-                                      label="Redeem Code"
+                                      label="Resgatar código"
                                       radius="lg"
                                       placeholder="Enter your redeem code here"
                                       variant={'flat'}
@@ -87,10 +87,10 @@ export default function Home() {
                                       isLoading={isRedeeming}
                                       variant={'flat'}
                                       className={'w-full max-w-[700px]'}
-                                      color={'secondary'}
+                                      color={'primary'}
                                       type={'submit'}
                                   >
-                                      Redeem
+                                      Ativar
                                   </Button>
                               </div>
                           </form>

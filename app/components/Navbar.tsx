@@ -18,7 +18,7 @@ export default function NavbarComponent() {
         {
             name: 'Home',
             icon: <IoHomeOutline   />,
-            href: '/'
+            href: 'https://brazil.uaitool.in/page/acessos_pro'
         },
         {
             name: 'Freepik Downloader',
@@ -50,7 +50,7 @@ export default function NavbarComponent() {
 
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
                 <NavbarItem>
-                    <Link color="foreground" href="/" className={'flex gap-2 justify-center items-center'}>
+                    <Link color="foreground" href="https://brazil.uaitool.in/page/acessos_pro" className={'flex gap-2 justify-center items-center'}>
                         <IoHomeOutline />
                         Home
                     </Link>

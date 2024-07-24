@@ -10,7 +10,7 @@ import NavbarComponent from "@/app/components/Navbar";
 const rubik = Rubik({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "Acessos Pro",
+    title: "Acessos PRO",
     description: "Acessos Pro",
 };
 
