@@ -10,8 +10,8 @@ import NavbarComponent from "@/app/components/Navbar";
 const rubik = Rubik({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "CreativeBox",
-    description: "CreativeBox",
+    title: "Acessos Pro",
+    description: "Acessos Pro",
 };
 
 export default async function RootLayout({
