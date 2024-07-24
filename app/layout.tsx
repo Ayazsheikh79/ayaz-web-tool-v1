@@ -10,8 +10,8 @@ import NavbarComponent from "@/app/components/Navbar";
 const rubik = Rubik({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "Envato Downloader",
-    description: "Best tool for downloading envato, freepik and adobe stock items.",
+    title: "CreativeBox",
+    description: "CreativeBox",
 };
 
 export default async function RootLayout({

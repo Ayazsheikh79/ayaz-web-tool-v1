@@ -2,7 +2,7 @@ import prisma from "@/app/libs/prismadb";
 
 export async function POST(req: Request) {
     const body = await req.json();
-    const { name, email, password, tgId } = body;
+    const { name, email, password } = body;
 
     if (!name || !email || !password) {
         return Response.json({
@@ -51,27 +51,11 @@ export async function POST(req: Request) {
             });
         }
 
-        const createFreepikLimit = await prisma.freePikLimit.create({
-            data: {
-                userId: user.id
-            }
-        });
-
-        const createEnvatoLimit = await prisma.envatoLimit.create({
+        const createLimit = await prisma.limit.create({
             data: {
                 userId: user.id,
-            }
-        })
-
-        const envatoMonthlyLimit = await prisma.envatoMonthlyLimit.create({
-            data: {
-                userId: user.id,
-            }
-        });
-
-        const freepikMonthlyLimit = await prisma.freePikMonthlyLimit.create({
-            data: {
-                userId: user.id,
+                limit: 0,
+                code: 0
             }
         });
 

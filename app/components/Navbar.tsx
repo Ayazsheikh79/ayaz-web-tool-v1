@@ -8,6 +8,7 @@ import { IoCloudDownloadOutline } from "react-icons/io5";
 import {useRouter} from "next/navigation";
 import { IoHomeOutline } from "react-icons/io5";
 import { CiUser } from "react-icons/ci";
+import Image from "next/image";
 
 export default function NavbarComponent() {
     const router = useRouter();
@@ -20,24 +21,9 @@ export default function NavbarComponent() {
             href: '/'
         },
         {
-            name: 'Profile',
-            icon: <CiUser />,
-            href: '/profile'
-        },
-        {
             name: 'Freepik Downloader',
             icon: <IoCloudDownloadOutline  />,
             href: '/freepik'
-        },
-        // {
-        //     name: 'Adobe Stock Downloader',
-        //     icon: <IoCloudDownloadOutline  />,
-        //     href: '/tool/adobe'
-        // },
-        {
-            name : 'Envato Elements Downloader',
-            icon: <IoCloudDownloadOutline  />,
-            href: '/envato'
         },
         {
             name: 'Sign Out',
@@ -52,9 +38,12 @@ export default function NavbarComponent() {
                     className={'cursor-pointer'}
                 >
                     <Link href={'/'} className={'text-black'}>
-                        <p className="font-bold text-inherit">
-                            Envato Downloader
-                        </p>
+                        <Image
+                            src={'/tools.png'}
+                            alt={'logo'}
+                            width={150}
+                            height={150}
+                        />
                     </Link>
                 </NavbarBrand>
             </NavbarContent>

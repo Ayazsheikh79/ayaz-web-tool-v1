@@ -12,38 +12,9 @@ import {Select, SelectItem} from "@nextui-org/react";
 import {Switch, cn} from "@nextui-org/react";
 
 const options = [
-    {label: 'Envato - Basic', planCode: 11},
-    {label: 'Envato - Standard', planCode: 21},
-    {label: 'Envato - Premium', planCode: 31},
-
-    {label: 'FreePik - Basic', planCode: 12},
-    {label: 'FreePik - Standard', planCode: 22},
-    {label: 'FreePik - Premium', planCode: 32},
-
-    {label: 'Envato - Basic - 100 - 1 Month', planCode: 14},
-    {label: 'Envato - Standard - 200 - 1 Month', planCode: 24},
-    {label: 'Envato - Premium - 300 - 1 Month', planCode: 34},
-
-    {label: 'Freepik - Basic - 100 - 1 Month', planCode: 15},
-    {label: 'Freepik - Standard - 200 - 1 Month', planCode: 25},
-    {label: 'Freepik - Premium - 300 - 1 Month', planCode: 35},
-
-    {label: 'Artlist - Basic', planCode: 41},
-    {label: 'Artlist - Standard', planCode: 42},
-    {label: 'Artlist - Premium', planCode: 43},
-
-    {label: 'Artlist - Basic - 100 - 1 Month', planCode: 44},
-    {label: 'Artlist - Standard - 200 - 1 Month', planCode: 45},
-    {label: 'Artlist - Premium - 300 - 1 Month', planCode: 46},
-
-    {label: 'VectorStock - Basic', planCode: 51},
-    {label: 'VectorStock - Standard', planCode: 52},
-    {label: 'VectorStock - Premium', planCode: 53},
-
-    {label: 'VectorStock - Basic - 100 - 1 Month', planCode: 54},
-    {label: 'VectorStock - Standard - 200 - 1 Month', planCode: 55},
-    {label: 'VectorStock - Premium - 300 - 1 Month', planCode: 56},
-
+    {label: 'FreePik - 1 month', planCode: 1},
+    {label: 'FreePik - 3 months', planCode: 2},
+    {label: 'FreePik - 6 months', planCode: 3},
 ]
 
 export default function Page() {
@@ -76,7 +47,6 @@ export default function Page() {
     }, [router, session]);
 
     const [isGenerating, setIsGenerating] = useState(false)
-    const [credit, setCredit] = useState('')
 
     const generateCoupon = async (planCode:any) => {
         try {
@@ -84,28 +54,6 @@ export default function Page() {
             const res = await axios.post('/api/coupon', {
                 email: session?.user?.email,
                 planCode: planCode,
-                credits: 0
-            })
-            setCoupon(res.data.data)
-            setIsGenerating(false)
-        } catch (e) {
-            console.log(e)
-            setIsGenerating(false)
-        }
-    }
-
-    const generateCreditCoupon = async (e:any) => {
-        e.preventDefault()
-        try {
-            if (!credit) {
-                return toast.error('Please enter credit')
-            }
-            setIsGenerating(true)
-            const res = await axios.post('/api/coupon', {
-                email: session?.user?.email,
-                planCode: 99,
-                //convert to float number
-                credit:  parseFloat(parseFloat(credit).toFixed(2))
             })
             setCoupon(res.data.data)
             setIsGenerating(false)
@@ -175,7 +123,7 @@ export default function Page() {
     const copyCode = async () => {
         try {
             // @ts-ignore
-            const code = `code: ${coupon.code}\nplan: ${coupon.name}\ncredit: ${coupon.credit}\nCreated at: ${new Date(coupon.createdAt).toDateString()}\nPlan Duration: ${coupon.duration} days\nRedeem here: https://tuitionlink.in/#redeem`
+            const code = `code: ${coupon.code}\nplan: ${coupon.name}\ncredit: ${coupon.credit}\nCreated at: ${new Date(coupon.createdAt).toDateString()}\nPlan Duration: ${coupon.duration} days`
             await navigator.clipboard.writeText(code)
             toast.success('Code copied')
         } catch (e) {
@@ -210,34 +158,6 @@ export default function Page() {
                         </div>
                     </div>
 
-                    <div className={'space-y-4'}>
-                        <div className={'font-semibold text-center text-medium'}>
-                            Generate Credit Coupon
-                        </div>
-                        <div className={'flex w-full justify-center items-center'}>
-                            <form className={'space-y-4 w-full max-w-[35rem]'} onSubmit={generateCreditCoupon}>
-                                <Input
-                                    label="Credit"
-                                    radius="lg"
-                                    placeholder="Enter credit"
-                                    variant={'flat'}
-                                    value={credit}
-                                    onChange={(e) => setCredit(e.target.value)}
-                                />
-                                <div className={'w-full'}>
-                                    <Button
-                                        fullWidth
-                                        variant={'flat'}
-                                        color={'primary'}
-                                        type={'submit'}
-                                    >
-                                        Generate Coupon
-                                    </Button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
                     <div className={'bg-white p-4 rounded-md border text-medium font-semibold space-y-4'}>
                         <div>
                            Your code will appear here
@@ -262,9 +182,6 @@ export default function Page() {
                             <div>
                                 {/* @ts-ignore */}
                                 Plan Duration: <span className={'font-semibold'}>{coupon.duration} days</span>
-                            </div>
-                            <div>
-                                Redeem here: <span className={'font-semibold'}>https://tuitionlink.in/#redeem</span>
                             </div>
                         </div>
                         <Button

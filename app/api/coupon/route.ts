@@ -3,42 +3,12 @@ import * as crypto from "crypto";
 
 export async function POST(req: Request) {
     const body = await req.json();
-    const {email, planCode, credit} = body;
+    const {email, planCode} = body;
 
     const options = [
-        {label: 'Envato - Basic', planCode: 11},
-        {label: 'Envato - Standard', planCode: 21},
-        {label: 'Envato - Premium', planCode: 31},
-
-        {label: 'FreePik - Basic', planCode: 12},
-        {label: 'FreePik - Standard', planCode: 22},
-        {label: 'FreePik - Premium', planCode: 32},
-
-        {label: 'Envato - Basic - 100 - 1 Month', planCode: 14},
-        {label: 'Envato - Standard - 200 - 1 Month', planCode: 24},
-        {label: 'Envato - Premium - 300 - 1 Month', planCode: 34},
-
-        {label: 'Freepik - Basic - 100 - 1 Month', planCode: 15},
-        {label: 'Freepik - Standard - 200 - 1 Month', planCode: 25},
-        {label: 'Freepik - Premium - 300 - 1 Month', planCode: 35},
-
-        {label: 'Artlist - Basic', planCode: 41},
-        {label: 'Artlist - Standard', planCode: 42},
-        {label: 'Artlist - Premium', planCode: 43},
-
-        {label: 'Artlist - Basic - 100 - 1 Month', planCode: 44},
-        {label: 'Artlist - Standard - 200 - 1 Month', planCode: 45},
-        {label: 'Artlist - Premium - 300 - 1 Month', planCode: 46},
-
-        {label: 'VectorStock - Basic', planCode: 51},
-        {label: 'VectorStock - Standard', planCode: 52},
-        {label: 'VectorStock - Premium', planCode: 53},
-
-        {label: 'VectorStock - Basic - 100 - 1 Month', planCode: 54},
-        {label: 'VectorStock - Standard - 200 - 1 Month', planCode: 55},
-        {label: 'VectorStock - Premium - 300 - 1 Month', planCode: 56},
-
-        {label: 'On Demand Credits', planCode: 99}
+        {label: 'FreePik - 1 month', planCode: 1},
+        {label: 'FreePik - 3 months', planCode: 2},
+        {label: 'FreePik - 6 months', planCode: 3},
     ]
 
     try {
@@ -82,7 +52,6 @@ export async function POST(req: Request) {
             data: {
                 code: code,
                 planCode: planCode,
-                credit: credit,
                 // @ts-ignore
                 name: options.find(option => option.planCode === planCode).label,
             }

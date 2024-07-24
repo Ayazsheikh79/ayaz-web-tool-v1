@@ -25,95 +25,44 @@ export async function POST(req: Request) {
                 status: 404
             });
         }
-
-        const plans = await prisma.plan.findMany({
+        const plan = await prisma.plan.findFirst({
             where: {
                 userId: user.id,
-                planCode: {
-                    in: [12, 22, 32, 15, 25, 35]
-                },
-                active: true
+                endDate: {
+                    gte: new Date()
+                }
             }
-        });
+        })
 
-        if (!plans) {
-            const updateFreepikLimit = await prisma.freePikLimit.update({
+        if (!plan) {
+            const updateLimit = await prisma.limit.update({
                 where: {
                     userId: user.id
                 },
                 data: {
-                    freepik: 0,
-                    planCode: 0,
+                    limit: 0,
+                    code: 0
                 }
-            })
-
-            const updateFreepikMonthly = await prisma.freePikMonthlyLimit.update({
-                where: {
-                    userId: user.id
-                },
-                data: {
-                    freepik: 0,
-                    planCode: 0,
-                }
-            })
+            });
         }
 
-        const validPlans = plans.filter((plan) => {
-            return plan.endDate > new Date()
-        });
-
-        if (validPlans.length === 0) {
-            for (const plan of plans) {
-                const updatePlan = await prisma.plan.update({
-                    where: {
-                        id: plan.id
-                    },
-                    data: {
-                        active: false
-                    }
-                })
-            }
-
-            const updateFreepikLimits = await prisma.freePikLimit.update({
-                where: {
-                    userId: user.id
-                },
-                data: {
-                    freepik: 0,
-                    planCode: 0,
-                }
-            })
-
-            const updateFreepikMonthly = await prisma.freePikMonthlyLimit.update({
-                where: {
-                    userId: user.id
-                },
-                data: {
-                    freepik: 0,
-                    planCode: 0,
-                }
-            })
-
-        }
-
-        const freepikLimits = await prisma.freePikLimit.findUnique({
+        const limits = await prisma.limit.findUnique({
             where: {
                 userId: user.id
             }
         });
 
-        const freepikMonthlyLimits = await prisma.freePikMonthlyLimit.findUnique({
-            where: {
-                userId: user.id
-            }
-        });
+        if (!limits) {
+            return Response.json({
+                message: 'User limit not found'
+            }, {
+                status: 404
+            });
+        }
 
         return Response.json({
-            message: 'Envato limits fetched successfully',
-            data: {
-                freepik: freepikLimits,
-                monthly: freepikMonthlyLimits
-            }
+            success: true,
+            data: limits
         });
 
     } catch (error) {
