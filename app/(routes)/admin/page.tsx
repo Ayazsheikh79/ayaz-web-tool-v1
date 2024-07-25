@@ -66,7 +66,7 @@ export default function Page() {
     const [email, setEmail] = useState('')
     const [isSearching, setIsSearching] = useState(false)
     const [manageUser, setManageUser] = useState(null)
-    const [manageUserPlan, setManageUserPlan] = useState(null)
+    const [manageUserPlan, setManageUserPlan] = useState([])
 
     const submit = async (e:any) => {
         e.preventDefault()
@@ -75,7 +75,9 @@ export default function Page() {
                 return toast.error('Please enter an email')
             }
             setIsSearching(true)
-            const res = await axios.get(`/api/profile?email=${email}`)
+            const res = await axios.post(`/api/profile`, {
+                email: email
+            })
             setManageUser(res.data.data.user)
             setManageUserPlan(res.data.data.plans)
             setIsSearching(false)
@@ -92,11 +94,17 @@ export default function Page() {
                 return toast.error('Please enter an id')
             }
             setIsDeactivating(true)
-           const res = await axios.get(`/api/deactivate-plan?id=${id}`)
+            const res = await axios.get(`/api/deactivate-plan?id=${id}`)
             toast.success(res.data.message)
-            const res1 = await axios.get(`/api/profile?email=${email}`)
-            setManageUser(res.data.data.user)
-            setManageUserPlan(res.data.data.plans)
+            if (manageUserPlan.length > 0) {
+                // @ts-ignore
+                setManageUserPlan(prevPlans =>
+                    prevPlans.map(plan =>
+                        // @ts-ignore
+                        plan.id === id ? { ...plan, endDate: new Date().toISOString() } : plan
+                    )
+                )
+            }
             setIsDeactivating(false)
         } catch (e:any) {
             toast.error(e.response.data.message)
@@ -104,21 +112,6 @@ export default function Page() {
         }
     }
 
-    const [isDeleting, setIsDeleting] = useState(false)
-    const deletePlan = async (id:any) => {
-        try {
-            if (!id) {
-                return toast.error('Please enter an id')
-            }
-            setIsDeleting(true)
-            const res = await axios.get(`/api/delete-plan?id=${id}`)
-            toast.success(res.data.message)
-            setIsDeleting(false)
-        } catch (e:any) {
-            toast.error(e.response.data.message)
-            setIsDeleting(false)
-        }
-    }
 
     const copyCode = async () => {
         try {
@@ -173,15 +166,7 @@ export default function Page() {
                             </div>
                             <div>
                                 {/* @ts-ignore */}
-                                credit: <span className={'font-semibold'}>{coupon.credit}</span>
-                            </div>
-                            <div>
-                                {/* @ts-ignore */}
                                 Created at: <span className={'font-semibold'}>{new Date(coupon.createdAt).toDateString()}</span>
-                            </div>
-                            <div>
-                                {/* @ts-ignore */}
-                                Plan Duration: <span className={'font-semibold'}>{coupon.duration} days</span>
                             </div>
                         </div>
                         <Button
@@ -272,10 +257,6 @@ export default function Page() {
                                                         </div>
                                                         <div>
                                                             {/* @ts-ignore */}
-                                                            Status: {plan.active ? 'Active' : 'Inactive'}
-                                                        </div>
-                                                        <div>
-                                                            {/* @ts-ignore */}
                                                             Start
                                                             Date: {new Date(plan.startDate).toDateString()}
                                                         </div>
@@ -283,26 +264,19 @@ export default function Page() {
                                                             {/* @ts-ignore */}
                                                             End Date: {new Date(plan.endDate).toDateString()}
                                                         </div>
-                                                        <div className={'flex gap-2'}>
-                                                            <Button
-                                                                // @ts-ignore
-                                                                onClick={() => deactivatePlan(plan.id)}
-                                                                isLoading={isDeactivating}
-                                                                variant={'flat'}
-                                                                color={'warning'}
-                                                            >
-                                                                Deactivate Plan
-                                                            </Button>
-                                                            <Button
-                                                                // @ts-ignore
-                                                                onClick={() => deletePlan(plan.id)}
-                                                                isLoading={isDeleting}
-                                                                variant={'flat'}
-                                                                color={'danger'}
-                                                            >
-                                                                Delete Plan
-                                                            </Button>
-                                                        </div>
+                                                        {plan.endDate > new Date() &&
+                                                            <div className={'flex gap-2'}>
+                                                                <Button
+                                                                    // @ts-ignore
+                                                                    onClick={() => deactivatePlan(plan.id)}
+                                                                    isLoading={isDeactivating}
+                                                                    variant={'flat'}
+                                                                    color={'warning'}
+                                                                >
+                                                                    Deactivate Plan
+                                                                </Button>
+                                                            </div>
+                                                        }
                                                     </div>
                                                 </div>
                                             ))}
