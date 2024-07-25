@@ -123,6 +123,7 @@ export default function Page() {
                                 variant={'flat'}
                                 color={'primary'}
                                 type={'submit'}
+                                isLoading={isDownloading}
                             >
                                 Download
                             </Button>
