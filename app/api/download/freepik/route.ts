@@ -77,7 +77,7 @@ export async function POST (req: Request) {
             })
         }
 
-        const res = await axios.get(`https://server-4-9ctr2.ondigitalocean.app/api/freepik?fileId=${fileId}`)
+        const res = await axios.get(`https://freepik-server-1-4n9v9.ondigitalocean.app/api/freepik?fileId=${fileId}`)
 
         if (res.data.success) {
             await prisma.limit.update({
