@@ -76,7 +76,7 @@ export default function Page() {
                         >
                             <Button
                                 variant={'flat'}
-                                color={'primary'}
+                                className={'bg-[#0079d1] text-white'}
                                 fullWidth
                             >
                                 Acessar o Freepik
@@ -89,7 +89,7 @@ export default function Page() {
                         >
                             <Button
                                 variant={'flat'}
-                                color={'primary'}
+                                className={'bg-[#0079d1] text-white'}
                                 fullWidth
                             >
                                 Retornar ao painel
@@ -121,7 +121,7 @@ export default function Page() {
                             <Button
                                 fullWidth
                                 variant={'flat'}
-                                color={'primary'}
+                                className={'bg-[#0079d1] text-white'}
                                 type={'submit'}
                                 isLoading={isDownloading}
                             >

@@ -86,8 +86,7 @@ export default function Home() {
                                   <Button
                                       isLoading={isRedeeming}
                                       variant={'flat'}
-                                      className={'w-full max-w-[700px]'}
-                                      color={'primary'}
+                                      className={'w-full max-w-[700px] bg-[#0079d1] text-white'}
                                       type={'submit'}
                                   >
                                       Ativar
