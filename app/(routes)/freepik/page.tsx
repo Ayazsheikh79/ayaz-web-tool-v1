@@ -128,6 +128,14 @@ export default function Page() {
                                 Download
                             </Button>
                         </form>
+                        {downloadLink &&
+                            <div className={'font-medium text-sm'}>
+                                Your download will start automatically. If it doesn‘t, <Link className={'font-semibold'}
+                                                                                             target={'_blank'}
+                                                                                             href={downloadLink}>click
+                                here</Link>
+                            </div>
+                        }
                     </div>
                 </div>
             }
