@@ -25,7 +25,7 @@ export async function POST (req: Request) {
             })
         }
 
-        const res = await axios.get(`http://68.183.85.230:3001/api/envato?fileid=${fileId}`)
+        const res = await axios.get(`http://142.93.213.82:8080/api/envato?fileid=${fileId}`)
 
         if (!res.data.success) {
             return Response.json({
