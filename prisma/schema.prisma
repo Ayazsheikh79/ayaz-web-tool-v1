@@ -20,6 +20,7 @@ model User {
   monthlyLimit MonthlyLimit?
   credit       Credit?
   download     Download[]
+  order        Order[]
 }
 
 model Plan {
@@ -87,4 +88,15 @@ model PixedenToken {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
   token     String
+}
+
+model Order {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  orderId     String   @unique
+  orderAmount Float
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String   @db.ObjectId
+  plancode    Int
 }
