@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@cashfreepayments/cashfree-js": "^1.0.5",
     "@next-auth/prisma-adapter": "^0.4.4-canary.81",
     "@nextui-org/react": "^2.3.6",
     "@prisma/client": "^5.13.0",

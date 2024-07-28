@@ -4,10 +4,8 @@ import { Cashfree } from "cashfree-pg";
 const clientId = process.env.CASHFREE_CLIENT_ID
 const clientSecret = process.env.CASHFREE_CLIENT_SECRET
 
-// @ts-ignore
-Cashfree.XClientId = {clientId};
-// @ts-ignore
-Cashfree.XClientSecret = {clientSecret};
+Cashfree.XClientId = clientId
+Cashfree.XClientSecret = clientSecret
 Cashfree.XEnvironment = Cashfree.Environment.PRODUCTION;
 
 export async function POST(req: Request) {
@@ -60,21 +58,22 @@ export async function POST(req: Request) {
         }
 
         const request = {
-            order_amount: 1,
-            order_currency: "INR",
-            customer_details: {
-                customer_id: user.id,
-                customer_name: user.name,
-                customer_email: user.email,
-                customer_phone: 9999999999
+            "orderId": `${orderId}`,
+            "order_amount": 1,
+            "order_currency": "INR",
+            "customer_details": {
+                "customer_id": `${user.id}`,
+                "customer_name": `${user.name}`,
+                "customer_email": `${user.email}`,
+                "customer_phone": "9999999999"
             },
-            order_meta: {
-                return_url: "https://premiumgfx.shop"
+            "order_meta": {
+                "return_url": "https://premiumgfx.shop"
             },
-            order_note: ""
+            "order_note": ""
         }
 
-        const cashfreeOrder = await Cashfree.PGCreateOrder("2023-08-01", request)
+        const cashfreeOrder = await Cashfree.PGCreateOrder("2022-09-01", request)
 
         if (!cashfreeOrder) {
             return Response.json({
@@ -86,7 +85,7 @@ export async function POST(req: Request) {
 
         return Response.json({
             message: 'Order created',
-            data: cashfreeOrder
+            data: cashfreeOrder.data
         }, {
             status: 200
         })
