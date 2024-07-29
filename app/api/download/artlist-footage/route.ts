@@ -1,5 +1,6 @@
 import prisma from "@/app/libs/prismadb";
 import axios from "axios";
+const server = process.env.BASE_SERVER_URL
 
 export async function POST (req: Request) {
     const body = await req.json();
@@ -24,7 +25,7 @@ export async function POST (req: Request) {
             })
         }
 
-        const res = await axios.get(`https://server-4-9ctr2.ondigitalocean.app/api/artlist-footage?fileid=${fileId}`)
+        const res = await axios.get(`${server}/api/artlist-footage?fileid=${fileId}`)
 
         if (!res.data.success) {
             return Response.json({

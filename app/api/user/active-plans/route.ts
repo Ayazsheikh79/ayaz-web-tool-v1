@@ -29,7 +29,6 @@ export async function GET(req: Request) {
         const activePlans = await prisma.plan.findMany({
             where: {
                 userId: user.id,
-                active: true,
                 endDate: {
                     gt: new Date()
                 }

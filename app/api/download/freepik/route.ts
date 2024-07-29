@@ -1,5 +1,6 @@
 import prisma from "@/app/libs/prismadb";
 import axios from "axios";
+const server = process.env.BASE_SERVER_URL
 
 export async function POST (req: Request) {
     const body = await req.json();
@@ -24,7 +25,7 @@ export async function POST (req: Request) {
             })
         }
 
-        const res = await axios.get(`http://142.93.213.82:8080/api/freepik?fileId=${fileId}`)
+        const res = await axios.get(`${server}/api/freepik?fileId=${fileId}`)
 
         if (res.data.success) {
             return Response.json({
