@@ -23,7 +23,7 @@ export default function Page() {
             console.log(res.data.data.payment_session_id)
 
             const cashfree = Cashfree({
-                mode:"sandbox" //or production
+                mode:"production" //or production
             });
 
             let checkoutOptions = {
