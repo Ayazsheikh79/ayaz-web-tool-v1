@@ -7,6 +7,7 @@ import { Toaster} from 'sonner'
 import {Providers} from "./providers";
 import NavbarComponent from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
+import Script from 'next/script'
 
 const rubik = Rubik({ subsets: ["latin"] });
 
