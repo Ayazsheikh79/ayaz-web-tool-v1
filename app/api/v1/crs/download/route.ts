@@ -38,9 +38,6 @@ export async function POST(req: Request) {
 
         const toolIndex = providers.findIndex((tool) => url.includes(tool.url));
 
-        console.log(toolIndex)
-        console.log(tool)
-
         const userCredits = await prisma.credit.findUnique({
             where: {
                 userId: user.id
@@ -63,7 +60,7 @@ export async function POST(req: Request) {
             });
         }
 
-        if (toolIndex === 0 || toolIndex === 7 || toolIndex === 8 || toolIndex === 9 || toolIndex === 10 || toolIndex === 11 || toolIndex === 12 || toolIndex === 13 || toolIndex === 14 || toolIndex === 15 || toolIndex === 16 || toolIndex === 17 || toolIndex === 18 || toolIndex === 23 || toolIndex === 24 || toolIndex === 32 || toolIndex === 33 || toolIndex === 34 || toolIndex === 35) {
+        if (toolIndex === 0 || toolIndex === 7 || toolIndex === 8 || toolIndex === 9 || toolIndex === 10 || toolIndex === 11 || toolIndex === 12 || toolIndex === 13 || toolIndex === 14 || toolIndex === 15 || toolIndex === 16 || toolIndex === 17 || toolIndex === 22 || toolIndex === 23) {
             try {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/ondemand`, {url})
 
@@ -540,7 +537,7 @@ export async function POST(req: Request) {
                 })
             }
         }
-        if (toolIndex === 25) {
+        if (toolIndex === 18) {
             try {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/vecteezy`, {
                     url
@@ -591,7 +588,7 @@ export async function POST(req: Request) {
                 })
             }
         }
-        if (toolIndex === 26) {
+        if (toolIndex === 19) {
             try {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/envato`, {
                     url
@@ -642,7 +639,7 @@ export async function POST(req: Request) {
                 })
             }
         }
-        if (toolIndex === 27) {
+        if (toolIndex === 20) {
             try {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/adobe-image`, {
                     url
@@ -693,7 +690,7 @@ export async function POST(req: Request) {
                 })
             }
         }
-        if (toolIndex === 30) {
+        if (toolIndex === 21) {
             try {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/freepik`, {
                     url
@@ -743,65 +740,6 @@ export async function POST(req: Request) {
                     status: 400
                 })
             }
-        }
-        if (toolIndex === 31) {
-            try {
-                const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/pixeden`, {
-                    url
-                });
-                if (!res.data.success) {
-                    return Response.json({
-                        message: 'Failed to download file'
-                    }, {
-                        status: 400
-                    })
-                }
-
-                const dlCode = await crypto.randomBytes(16).toString('hex');
-
-                const createDownload = await prisma.download.create({
-                    data: {
-                        url,
-                        dlUrl: res.data.data.downloadUrl,
-                        userId: user.id,
-                        name: tool.provider,
-                        dlCode
-                    }
-                });
-
-                const updateCredits = await prisma.credit.update({
-                    where: {
-                        userId: user.id
-                    },
-                    data: {
-                        amount: parseFloat((userCredits.amount - tool.price).toFixed(2))
-                    }
-                });
-
-                return Response.json({
-                    success: true,
-                    message: 'Downloaded',
-                    downloadURLs: [
-                        {type: 'Download', url: `${process.env.NEXTAUTH_URL}/api/v1/download?dlcode=${dlCode}`}
-                    ]
-                }, {
-                    status: 200
-                })
-            } catch (e) {
-                return Response.json({
-                    message: 'Failed to download file'
-                }, {
-                    status: 400
-                })
-            }
-        }
-
-        if (toolIndex === 19 || toolIndex === 20 || toolIndex === 21 || toolIndex === 22 || toolIndex === 28 || toolIndex === 29) {
-            return  Response.json({
-                message: 'Please contact to buy this file'
-            }, {
-                status: 400
-            })
         }
 
         return Response.json({

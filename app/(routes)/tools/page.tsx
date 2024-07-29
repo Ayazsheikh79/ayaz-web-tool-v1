@@ -70,7 +70,7 @@ export default function Page() {
                                     className={'flex justify-between items-center p-2 bg-[#F4F4F5] rounded-md shadow-sm'}>
                                     <div className={'flex gap-2 items-center text-sm text-danger'}>
                                         <div className={'px-4'}>
-                                            On Demand Downloader
+                                            Single File Downloader
                                         </div>
                                     </div>
                                     <div>

@@ -83,7 +83,7 @@ export default function Page() {
                     <div className={'border p-4 rounded-md space-y-8 w-full max-w-[700px]'}>
                         <div className={'flex gap-5 items-center'}>
                             <div className={'font-semibold text-xl'}>
-                                On Demand Downloader
+                                Single File Downloader
                             </div>
                         </div>
                         <Divider className={'h-[0.5px]'}/>
