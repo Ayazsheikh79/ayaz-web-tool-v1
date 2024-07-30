@@ -25,7 +25,7 @@ export async function POST (req: Request) {
             })
         }
 
-        const res = await axios.get(`${server}/api/freepik?fileId=${fileId}`)
+        const res = await axios.get(`${server}/api/freepik?fileid=${fileId}`)
 
         if (res.data.success) {
             return Response.json({
@@ -49,7 +49,6 @@ export async function POST (req: Request) {
                 status: 200
             })
         }
-
 
         const res1 = await axios.get(`https://server-1-sybxd.ondigitalocean.app/api/freepik?fileId=${fileId}`)
 
