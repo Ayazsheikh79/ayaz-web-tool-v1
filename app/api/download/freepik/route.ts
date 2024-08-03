@@ -26,6 +26,7 @@ export async function POST (req: Request) {
         }
 
         const res = await axios.get(`${server}/api/freepik?fileid=${fileId}`)
+        console.log(res.data)
 
         if (res.data.success) {
             return Response.json({

@@ -27,7 +27,6 @@ export async function POST (req: Request) {
         }
 
         const res = await axios.get(`${server}/api/envato?fileid=${fileId}`)
-
         if (!res.data.success) {
             return Response.json({
                 success: false,
@@ -38,8 +37,6 @@ export async function POST (req: Request) {
         }
 
         return Response.json({
-            success: true,
-            message: 'Downloaded',
             data: res.data
         }, {
             status: 200

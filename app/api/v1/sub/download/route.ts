@@ -130,7 +130,7 @@ export async function POST(req: Request) {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/envato`, {
                     url
                 });
-                if (!res.data.success) {
+                if (!res.data.data.success) {
                     return Response.json({
                         message: 'Failed to download file'
                     }, {
@@ -150,7 +150,6 @@ export async function POST(req: Request) {
                         }
                     })
                 }
-
                 if (dailyLimit.limit > 0) {
                     await prisma.dailyLimit.update({
                         where: {
@@ -168,7 +167,7 @@ export async function POST(req: Request) {
                     success: true,
                     message: 'Downloaded',
                     downloadURLs: [
-                        {type: 'file', url: res.data.data.downloadLink}
+                        {type: 'file', url: res.data.data.downloadUrl}
                     ]
                 }, {
                     status: 200
@@ -351,7 +350,7 @@ export async function POST(req: Request) {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/artlist-music`, {
                     url
                 });
-                if (!res.data.success) {
+                if (!res.data.data.success) {
                     return Response.json({
                         message: 'Failed to download file'
                     }, {
@@ -388,8 +387,8 @@ export async function POST(req: Request) {
                     success: true,
                     message: 'Downloaded',
                     downloadURLs: [
-                        {type: 'wav', url: res.data.data.data.wav.downloadUrls[0]},
-                        {type: 'mp3', url: res.data.data.data.mp3.downloadUrls[0]},
+                        {type: 'wav', url: res.data.data.wav.downloadUrl},
+                        {type: 'mp3', url: res.data.data.mp3.downloadUrl},
                     ]
                 }, {
                     status: 200
@@ -408,7 +407,7 @@ export async function POST(req: Request) {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/artlist-footage`, {
                     url
                 });
-                if (!res.data.success) {
+                if (!res.data.data.success) {
                     return Response.json({
                         message: 'Failed to download file'
                     }, {
@@ -445,9 +444,9 @@ export async function POST(req: Request) {
                     success: true,
                     message: 'Downloaded',
                     downloadURLs: [
-                        {type: 'hd', url: res.data.data.data.hd.downloadUrls[0]},
-                        {type: 'proRes4k', url: res.data.data.data.proRes4k.downloadUrls[0]},
-                        {type: 'mp4_4k', url: res.data.data.data.mp4_4k.downloadUrls[0]},
+                        {type: 'hd', url: res.data.data.hd.downloadUrl},
+                        {type: 'proRes4k', url: res.data.data.proRes4k.downloadUrl},
+                        {type: 'mp4_4k', url: res.data.data.mp4_4k.downloadUrl},
                     ]
                 }, {
                     status: 200
@@ -466,7 +465,7 @@ export async function POST(req: Request) {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/artlist-sfx`, {
                     url
                 });
-                if (!res.data.success) {
+                if (!res.data.data.success) {
                     return Response.json({
                         message: 'Failed to download file'
                     }, {
@@ -503,8 +502,8 @@ export async function POST(req: Request) {
                     success: true,
                     message: 'Downloaded',
                     downloadURLs: [
-                        {type: 'wav', url: res.data.data.data.wav.downloadUrls[0]},
-                        {type: 'aac', url: res.data.data.data.aac.downloadUrls[0]},
+                        {type: 'wav', url: res.data.data.wav.downloadUrl},
+                        {type: 'aac', url: res.data.data.aac.downloadUrl},
                     ]
                 }, {
                     status: 200
@@ -523,7 +522,7 @@ export async function POST(req: Request) {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/artlist-templates`, {
                     url
                 });
-                if (!res.data.success) {
+                if (!res.data.data.success) {
                     return Response.json({
                         message: 'Failed to download file'
                     }, {
@@ -543,7 +542,6 @@ export async function POST(req: Request) {
                         }
                     })
                 }
-
                 if (dailyLimit.limit > 0) {
                     await prisma.dailyLimit.update({
                         where: {
@@ -556,18 +554,23 @@ export async function POST(req: Request) {
                         }
                     })
                 }
+
                 let downloadURLs = [];
 
-                if (res.data.data.data.finalCutPro.downloadUrls[0] !== 'NA') {
-                    downloadURLs.push({ type: 'final cut pro', url: res.data.data.data.finalCutPro.downloadUrls[0] });
+                if (res.data.data.finalCutPro.downloadUrl !== 'NA') {
+                    downloadURLs.push({ type: 'final cut pro', url: res.data.data.finalCutPro.downloadUrl });
                 }
 
-                if (res.data.data.data.premierePro.downloadUrls[0] !== 'NA') {
-                    downloadURLs.push({ type: 'premiere pro', url: res.data.data.data.premierePro.downloadUrls[0] });
+                if (res.data.data.premierePro.downloadUrl !== 'NA') {
+                    downloadURLs.push({ type: 'premiere pro', url: res.data.data.premierePro.downloadUrl });
                 }
 
-                if (res.data.data.data.afterEffects.downloadUrls[0] !== 'NA') {
-                    downloadURLs.push({ type: 'after effects', url: res.data.data.data.afterEffects.downloadUrls[0] });
+                if (res.data.data.afterEffects.downloadUrl !== 'NA') {
+                    downloadURLs.push({ type: 'after effects', url: res.data.data.afterEffects.downloadUrl });
+                }
+
+                if (res.data.data.daVinciResolve.downloadUrl !== 'NA') {
+                    downloadURLs.push({ type: 'daVinci Resolve', url: res.data.data.afterEffects.downloadUrl });
                 }
 
                 return Response.json({
@@ -591,7 +594,7 @@ export async function POST(req: Request) {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/artgrid`, {
                     url
                 });
-                if (!res.data.success) {
+                if (!res.data.data.success) {
                     return Response.json({
                         message: 'Failed to download file'
                     }, {
@@ -628,9 +631,9 @@ export async function POST(req: Request) {
                     success: true,
                     message: 'Downloaded',
                     downloadURLs: [
-                        {type: 'hd', url: res.data.data.data.hd.downloadUrls[0]},
-                        {type: '4k prores', url: res.data.data.data.proRes4k.downloadUrls[0]},
-                        {type: '4k mp4', url: res.data.data.data.mp4_4k.downloadUrls[0]},
+                        {type: 'hd', url: res.data.data.hd.downloadUrl},
+                        {type: 'proRes4k', url: res.data.data.proRes4k.downloadUrl},
+                        {type: 'mp4_4k', url: res.data.data.mp4_4k.downloadUrl},
                     ]
                 }, {
                     status: 200

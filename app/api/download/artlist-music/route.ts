@@ -37,8 +37,6 @@ export async function POST (req: Request) {
         }
 
         return Response.json({
-            success: true,
-            message: 'Downloaded',
             data: res.data
         }, {
             status: 200
