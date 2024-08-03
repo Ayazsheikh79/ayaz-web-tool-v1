@@ -76,10 +76,10 @@ export default function Home() {
           {isLoading && <Loading />}
           {!isLoading &&
               <div className={'w-full min-h-full space-y-8 p-4 lg:px-20'}>
-                  <div className={'bg-danger-100 flex items-center gap-5 text-blacl font-medium text-sm rounded-sm shadow-sm p-4 w-full'}>
-                      <CiCircleAlert />
-                      We are currently upgrading our website and server infrastructure. During this time, some tools and services may not function properly. We are working to resolve these issues as quickly as possible. Thank you for your patience and understanding.
-                  </div>
+                  {/*<div className={'bg-danger-100 flex items-center gap-5 text-blacl font-medium text-sm rounded-sm shadow-sm p-4 w-full'}>*/}
+                  {/*    <CiCircleAlert />*/}
+                  {/*    We are currently upgrading our website and server infrastructure. During this time, some tools and services may not function properly. We are working to resolve these issues as quickly as possible. Thank you for your patience and understanding.*/}
+                  {/*</div>*/}
                   {status !== 'authenticated' &&
                       <div className={'bg-warning-100 flex items-center gap-5 text-blacl font-medium text-sm rounded-sm shadow-sm p-4 w-full'}>
                           <CiCircleAlert />
