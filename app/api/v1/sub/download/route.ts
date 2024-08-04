@@ -185,7 +185,7 @@ export async function POST(req: Request) {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/freepik`, {
                     url
                 });
-                if (!res.data.success) {
+                if (!res.data.data.success) {
                     return Response.json({
                         message: 'Failed to download file'
                     }, {
@@ -222,7 +222,7 @@ export async function POST(req: Request) {
                     success: true,
                     message: 'Downloaded',
                     downloadURLs: [
-                        {type: 'file', url: res.data.data.downloadLink}
+                        {type: 'file', url: res.data.data.downloadUrl}
                     ]
                 }, {
                     status: 200

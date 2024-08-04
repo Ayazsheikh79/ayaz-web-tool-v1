@@ -26,12 +26,9 @@ export async function POST (req: Request) {
         }
 
         const res = await axios.get(`${server}/api/freepik?fileid=${fileId}`)
-        console.log(res.data)
 
         if (res.data.success) {
             return Response.json({
-                success: true,
-                message: 'Downloaded',
                 data: res.data
             }, {
                 status: 200
@@ -39,24 +36,20 @@ export async function POST (req: Request) {
         }
 
 
-        const res0 = await axios.get(`https://envato-web-server-vrhv2.ondigitalocean.app/api/freepik?fileId=${fileId}`)
+        const res0 = await axios.get(`${server}/api/freepik2?fileid=${fileId}`)
 
         if (res0.data.success) {
             return Response.json({
-                success: true,
-                message: 'Downloaded',
                 data: res0.data
             }, {
                 status: 200
             })
         }
 
-        const res1 = await axios.get(`https://server-1-sybxd.ondigitalocean.app/api/freepik?fileId=${fileId}`)
+        const res1 = await axios.get(`https://envato-web-server-vrhv2.ondigitalocean.app/api/freepik?fileId=${fileId}`)
 
         if (res1.data.success) {
             return Response.json({
-                success: true,
-                message: 'Downloaded',
                 data: res1.data
             }, {
                 status: 200
@@ -67,8 +60,6 @@ export async function POST (req: Request) {
 
         if (res2.data.success) {
             return Response.json({
-                success: true,
-                message: 'Downloaded',
                 data: res2.data
             }, {
                 status: 200
