@@ -235,61 +235,6 @@ export async function POST(req: Request) {
                 })
             }
         }
-        // if (toolIndex === 2) {
-        //     try {
-        //         const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/adobe-image`, {
-        //             url
-        //         });
-        //         if (!res.data.success) {
-        //             return Response.json({
-        //                 message: 'Failed to download file'
-        //             }, {
-        //                 status: 400
-        //             })
-        //         }
-        //
-        //         if (dailyLimit.limit < 1) {
-        //             await prisma.monthlyLimit.update({
-        //                 where: {
-        //                     userId: user.id
-        //                 },
-        //                 data: {
-        //                     limit: {
-        //                         decrement: 1
-        //                     }
-        //                 }
-        //             })
-        //         }
-        //
-        //         if (dailyLimit.limit > 0) {
-        //             await prisma.dailyLimit.update({
-        //                 where: {
-        //                     userId: user.id
-        //                 },
-        //                 data: {
-        //                     limit: {
-        //                         decrement: 1
-        //                     }
-        //                 }
-        //             })
-        //         }
-        //         return Response.json({
-        //             success: true,
-        //             message: 'Downloaded',
-        //             downloadURLs: [
-        //                 {type: 'file', url: res.data.data.downloadLink}
-        //             ]
-        //         }, {
-        //             status: 200
-        //         })
-        //     } catch (e) {
-        //         return Response.json({
-        //             message: 'Failed to download file'
-        //         }, {
-        //             status: 400
-        //         })
-        //     }
-        // }
         if (toolIndex === 2) {
             try {
                 const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/creative-fabrica`, {
@@ -710,7 +655,7 @@ export async function POST(req: Request) {
                     url
                 });
 
-                if (!res.data.success) {
+                if (!res.data.data.success) {
                     return Response.json({
                         message: 'Failed to download file'
                     }, {
@@ -748,8 +693,59 @@ export async function POST(req: Request) {
                     success: true,
                     message: 'Downloaded',
                     downloadURLs: [
-                        {type: 'file', url: res.data.data.data.url}
+                        {type: 'file', url: res.data.data.downloadUrl}
                     ]
+                }, {
+                    status: 200
+                })
+            } catch (e) {
+                return Response.json({
+                    message: 'Failed to download file'
+                }, {
+                    status: 400
+                })
+            }
+        }
+        if (toolIndex === 9) {
+            try {
+                const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/adobe-image`, {
+                    url
+                });
+                if (!res.data.data.success) {
+                    return Response.json({
+                        message: 'Failed to download file'
+                    }, {
+                        status: 400
+                    })
+                }
+
+                // if (dailyLimit.limit < 1) {
+                //     await prisma.monthlyLimit.update({
+                //         where: {
+                //             userId: user.id
+                //         },
+                //         data: {
+                //             limit: {
+                //                 decrement: 1
+                //             }
+                //         }
+                //     })
+                // }
+                //
+                // if (dailyLimit.limit > 0) {
+                //     await prisma.dailyLimit.update({
+                //         where: {
+                //             userId: user.id
+                //         },
+                //         data: {
+                //             limit: {
+                //                 decrement: 1
+                //             }
+                //         }
+                //     })
+                // }
+                return Response.json({
+                    data: res.data.data
                 }, {
                     status: 200
                 })

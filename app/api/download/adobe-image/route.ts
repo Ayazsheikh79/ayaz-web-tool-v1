@@ -13,11 +13,17 @@ export async function POST (req: Request) {
             })
         }
 
-        const link = url.split('?')[0];
-        const parts = link.split('/');
-        const fileId = parts[parts.length - 1];
+        const parsedUrl = new URL(url)
+        const params = new URLSearchParams(parsedUrl.search);
+        let fileid = params.get('asset_id');
 
-        if (!fileId) {
+        if (!fileid) {
+            const link = url.split('?')[0];
+            const parts = link.split('/');
+            fileid = parts[parts.length - 1];
+        }
+
+        if (!fileid) {
             return Response.json({
                 success: false,
                 message: 'Invalid URL'
@@ -26,7 +32,9 @@ export async function POST (req: Request) {
             })
         }
 
-        const res = await axios.get(`https://server-4-9ctr2.ondigitalocean.app/api/adobe?assetid=${fileId}`)
+        const res = await axios.get(`${process.env.BASE_SERVER_URL}/api/adobe?fileid=${fileid}`)
+
+        // console.log(res.data)
 
         if (!res.data.success) {
             return Response.json({
@@ -38,8 +46,6 @@ export async function POST (req: Request) {
         }
 
         return Response.json({
-            success: true,
-            message: 'Downloaded',
             data: res.data
         }, {
             status: 200

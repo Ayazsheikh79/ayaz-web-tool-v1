@@ -14,7 +14,7 @@ export async function POST (req: Request) {
         }
 
 
-        const res = await axios.get(`https://server-main-aafdq.ondigitalocean.app/api/vecteezy?url=${url}`)
+        const res = await axios.get(`${process.env.BASE_SERVER_URL}/api/vecteezy?url=${url}`)
 
         if (!res.data.success) {
             return Response.json({
@@ -25,10 +25,7 @@ export async function POST (req: Request) {
             })
         }
 
-        console.log(res.data)
         return Response.json({
-            success: true,
-            message: 'Downloaded',
             data: res.data
         }, {
             status: 200

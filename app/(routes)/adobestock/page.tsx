@@ -20,7 +20,7 @@ export default function Page() {
     const [limits, setLimits] = useState(null)
     const [envatoUrl, setEnvatoUrl] = useState('')
     const [isDownloading, setIsDownloading] = useState(false)
-    const [downloadLink, setDownloadLink] = useState('')
+    const [downloadLink, setDownloadLink] = useState([])
     const [refresh, setRefresh] = useState(false)
 
     useEffect(() => {
@@ -49,11 +49,11 @@ export default function Page() {
                 email: session?.user?.email,
                 path: pathname
             }
+            setDownloadLink([])
             setIsDownloading(true)
             const res = await axios.post('/api/v1/sub/download', data)
-            setDownloadLink(res.data.downloadURLs[0].url)
+            setDownloadLink(res.data.data.downloadUrls)
             setRefresh(!refresh)
-            window.open(res.data.downloadURLs[0].url, '_blank');
             setIsDownloading(false)
         } catch (e:any) {
             toast.error(e.response.data.message)
@@ -65,7 +65,20 @@ export default function Page() {
         <div className={'w-full'} style={{ height: `calc(100% - 64px)`}}>
             {isLoading && <Loading />}
             {!isLoading &&
-                <div className={'w-full h-full flex justify-center items-center p-4'}>
+                <div className={'w-full min-h-full flex flex-col justify-center gap-5 items-center p-4'}>
+                    <div className={'w-full max-w-[700px] bg-warning-100 p-5 rounded-md text-sm font-light'}>
+                        <div className={''}>
+                            ⚠️ Testing Phase Notice
+                        </div>
+                        <div>
+                            During the testing phase, you can download unlimited files and no quota will be charged. Please use the service wisely to ensure everyone benefits.
+                        </div>
+                        <div>
+                            If you encounter any issues, report them here: <Link className={'text-sm font-medium'} href={'https://t.me/AyazSheikh079'}>
+                            Report Issue
+                        </Link>
+                        </div>
+                    </div>
                     <div className={'border p-4 rounded-md space-y-8 w-full max-w-[700px]'}>
                         <div className={'font-semibold text-xl'}>
                             AdobeStock Downloader
@@ -100,12 +113,24 @@ export default function Page() {
                                 Download
                             </Button>
                         </form>
-                        {downloadLink &&
-                            <div className={'font-medium text-sm'}>
-                                Your download will start automatically. If it doesn‘t, <Link className={'font-semibold'}
-                                                                                             target={'_blank'}
-                                                                                             href={downloadLink}>click
-                                here</Link>
+                        {downloadLink.length > 0 &&
+                            <div className={'space-y-4'}>
+                                <Divider className={'h-[0.5px]'}/>
+                                <div className={'grid grid-cols-2 gap-5'}>
+                                    {downloadLink.map((link:any, index:number) => (
+                                        <Button
+                                            key={index}
+                                            as={'a'}
+                                            variant={'flat'}
+                                            color={'primary'}
+                                            href={link.url}
+                                            target={'_blank'}
+                                            className={'uppercase'}
+                                        >
+                                            {link.name}
+                                        </Button>
+                                    ))}
+                                </div>
                             </div>
                         }
                     </div>
