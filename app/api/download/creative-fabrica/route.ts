@@ -14,9 +14,8 @@ export async function POST (req: Request) {
         }
         const api = '2c63835aecf37e6ad2eca1942be30e6e3f8dd8ae'
 
-        const res = await axios.get(`https://www.gfxload.com/unpub/?api=${api}&url=${url}`)
+        const res = await axios.get(`https://web.gfxload.com/unpub/?api=${api}&url=${url}`)
 
-        console.log(res.data)
 
         if (!res.data.downloadURL) {
             return Response.json({
