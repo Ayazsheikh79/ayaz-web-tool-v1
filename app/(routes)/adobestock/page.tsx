@@ -66,19 +66,6 @@ export default function Page() {
             {isLoading && <Loading />}
             {!isLoading &&
                 <div className={'w-full min-h-full flex flex-col justify-center gap-5 items-center p-4'}>
-                    <div className={'w-full max-w-[700px] bg-warning-100 p-5 rounded-md text-sm font-light'}>
-                        <div className={''}>
-                            ⚠️ Testing Phase Notice
-                        </div>
-                        <div>
-                            During the testing phase, you can download unlimited files and no quota will be charged. Please use the service wisely to ensure everyone benefits.
-                        </div>
-                        <div>
-                            If you encounter any issues, report them here: <Link className={'text-sm font-medium'} href={'https://t.me/AyazSheikh079'}>
-                            Report Issue
-                        </Link>
-                        </div>
-                    </div>
                     <div className={'border p-4 rounded-md space-y-8 w-full max-w-[700px]'}>
                         <div className={'font-semibold text-xl'}>
                             AdobeStock Downloader

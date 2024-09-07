@@ -719,31 +719,31 @@ export async function POST(req: Request) {
                     })
                 }
 
-                // if (dailyLimit.limit < 1) {
-                //     await prisma.monthlyLimit.update({
-                //         where: {
-                //             userId: user.id
-                //         },
-                //         data: {
-                //             limit: {
-                //                 decrement: 1
-                //             }
-                //         }
-                //     })
-                // }
-                //
-                // if (dailyLimit.limit > 0) {
-                //     await prisma.dailyLimit.update({
-                //         where: {
-                //             userId: user.id
-                //         },
-                //         data: {
-                //             limit: {
-                //                 decrement: 1
-                //             }
-                //         }
-                //     })
-                // }
+                if (dailyLimit.limit < 1) {
+                    await prisma.monthlyLimit.update({
+                        where: {
+                            userId: user.id
+                        },
+                        data: {
+                            limit: {
+                                decrement: 1
+                            }
+                        }
+                    })
+                }
+
+                if (dailyLimit.limit > 0) {
+                    await prisma.dailyLimit.update({
+                        where: {
+                            userId: user.id
+                        },
+                        data: {
+                            limit: {
+                                decrement: 1
+                            }
+                        }
+                    })
+                }
                 return Response.json({
                     data: res.data.data
                 }, {
