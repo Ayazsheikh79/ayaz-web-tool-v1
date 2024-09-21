@@ -502,19 +502,19 @@ export async function POST(req: Request) {
 
                 let downloadURLs = [];
 
-                if (res.data.data.finalCutPro.downloadUrl !== 'NA') {
-                    downloadURLs.push({ type: 'final cut pro', url: res.data.data.finalCutPro.downloadUrl });
+                if (res.data.data.finalcutpro) {
+                    downloadURLs.push({ type: 'final cut pro', url: res.data.data.finalcutpro.downloadUrl });
                 }
 
-                if (res.data.data.premierePro.downloadUrl !== 'NA') {
+                if (res.data.data.premierePro) {
                     downloadURLs.push({ type: 'premiere pro', url: res.data.data.premierePro.downloadUrl });
                 }
 
-                if (res.data.data.afterEffects.downloadUrl !== 'NA') {
+                if (res.data.data.afterEffects) {
                     downloadURLs.push({ type: 'after effects', url: res.data.data.afterEffects.downloadUrl });
                 }
 
-                if (res.data.data.daVinciResolve.downloadUrl !== 'NA') {
+                if (res.data.data.daVinciResolve) {
                     downloadURLs.push({ type: 'daVinci Resolve', url: res.data.data.afterEffects.downloadUrl });
                 }
 
