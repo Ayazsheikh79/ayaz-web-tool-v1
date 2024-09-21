@@ -20,6 +20,10 @@ const tools = [
     {provider: 'Vecteezy', path: '/vecteezy', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Vecteezy_logo.svg/2044px-Vecteezy_logo.svg.png', url: 'https://www.vecteezy.com/'},
 
     {provider: 'AdobeStock', path: '/adobestock', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAr11v9dc5tnsgTHkkzkD62Sb6JnO8xs3ppA&s', url: 'https://stock.adobe.com/'},
+
+    // {
+    //     provider: 'Storyblocks Footage', path: '/storyblocks', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ6iTITE6TcDhfgBi7JjqyWzJK1aV4oRNW0Q&s', url: 'https://www.storyblocks.com/'
+    // },
 ]
 
 export default tools;

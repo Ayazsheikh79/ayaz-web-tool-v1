@@ -757,6 +757,58 @@ export async function POST(req: Request) {
                 })
             }
         }
+        if (toolIndex === 10) {
+            try {
+                const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/download/storyblocks`, {
+                    url
+                });
+                if (!res.data.data.success) {
+                    return Response.json({
+                        message: 'Failed to download file'
+                    }, {
+                        status: 400
+                    })
+                }
+
+                if (dailyLimit.limit < 1) {
+                    await prisma.monthlyLimit.update({
+                        where: {
+                            userId: user.id
+                        },
+                        data: {
+                            limit: {
+                                decrement: 1
+                            }
+                        }
+                    })
+                }
+
+                if (dailyLimit.limit > 0) {
+                    await prisma.dailyLimit.update({
+                        where: {
+                            userId: user.id
+                        },
+                        data: {
+                            limit: {
+                                decrement: 1
+                            }
+                        }
+                    })
+                }
+                return Response.json({
+                    data: res.data.data
+                }, {
+                    status: 200
+                })
+            } catch (e) {
+                return Response.json({
+                    message: 'Failed to download file'
+                }, {
+                    status: 400
+                })
+            }
+
+        }
 
         return Response.json({
             success: true,
